@@ -17,7 +17,7 @@
                     <div id="my-tab-content" class="tab-content">
                         <div class="tab-pane active" id="login">
                            
-                            {!!   HTML::image("static/assets/img/avatar_2x.png", "Logo",array('class'=>'profile-img')) !!}
+                            {!!   Html::image("static/assets/img/avatar_2x.png", "Logo",array('class'=>'profile-img')) !!}
                           
                             {!! Form::open(array('route' => 'auth/login','class'=>'form-signin form','autocomplete'=>'off')) !!}
                                 {!! Form::email('email', '',array('class' => 'form-control','placeholder' => 'Username','required' => 'required','autofocus'=> 'autofocus')) !!} 
@@ -37,7 +37,7 @@
         </div>
     </div>
 
-    <div id="particles"></div>
+
 
 
 @endsection

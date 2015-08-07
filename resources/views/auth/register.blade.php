@@ -1,4 +1,4 @@
-@extends('layouts/app')
+@extends('layouts/default')
  
 @section('content')
     <!--
@@ -28,7 +28,6 @@
                             <label>Password confirmation</label>
                             {!! Form::password('password_confirmation', ['class'=> 'form-control']) !!}
                         </div>
- 
                         <div>
                             {!! Form::submit('send',['class' => 'btn btn-primary']) !!}
                         </div>
@@ -41,6 +40,7 @@
     -->
 
 <div class="container">
+    <br><br><br>
     <div class="panel panel-default col-md-6 col-lg-6 ">
         <div class="panel-body">
             <div class="panel panel-default">
