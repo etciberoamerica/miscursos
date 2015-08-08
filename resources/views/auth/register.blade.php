@@ -59,8 +59,6 @@
                           {!!  Form::select('institucion', $data, 0 ,array('id'=>'id_institucion','class' => 'form-control')) !!}
 
                     </div>
-
-                    
                     <div class="form-group">
                         * {!! Form::label('nombre','Nombre') !!}:
                         {!! Form::text('nombre','',['class'=>'form-control','placeholder'=>'Nombre']) !!}
