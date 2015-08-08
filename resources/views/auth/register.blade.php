@@ -1,3 +1,4 @@
+
 @extends('layouts/default')
  
 @section('content')
@@ -54,9 +55,23 @@
                 <div class="panel-body">
 
                     <div class="form-group">
-                        * {!! Form::label('institucion','Institución') !!}:
+                        * {!! Form::label('institucion',utf8_encode('Institución')) !!}:
+                          {!!  Form::select('institucion', $data, 0 ,array('id'=>'id_institucion','class' => 'form-control')) !!}
 
                     </div>
+                    <div class="form-group">
+                        * {!! Form::label('nombre','Nombre') !!}:
+                        {!! Form::text('nombre','',['class'=>'form-control','placeholder'=>'Nombre']) !!}
+                    </div>
+                    <div class="form-group">
+                        * {!! Form::label('ap1','Apellido Paterno') !!}:
+                          {!! Form::text('apellido_paterno','',['class'=>'form-control','placeholder'=>'Apellido Paterno']) !!}
+                    </div>
+                    <div class="form-group">
+                        * {!! Form::label('ap2','Aopellido Materno') !!}:
+                        {!! Form::text('apellido_materno','',['class'=>'form-control','placeholder'=>'Apellido Materno']) !!}
+                    </div>
+
                 </div>
             </div>
 

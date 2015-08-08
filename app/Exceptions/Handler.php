@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exceptions;
+namespace misCursos\Exceptions;
 
 use Exception;
 use Symfony\Component\HttpKernel\Exception\HttpException;
