@@ -78,20 +78,20 @@ return [
 
         'sqlsrv_one' => [
             'driver'   => 'sqlsrv',
-            'host'     => env('DB_HOST_SRV'),
+            'host'     => env('DB_HOST_SRV_ONE'),
             'database' => env('DB_DATABASE_SRV_ONE'),
-            'username' => env('DB_USERNAME_SRV'),
-            'password' => env('DB_PASSWORD_SRV'),
+            'username' => env('DB_USERNAME_SRV_ONE'),
+            'password' => env('DB_PASSWORD_SRV_ONE'),
             'charset'  => 'utf8',
             'prefix'   => '',
         ],
 
         'sqlsrv_two' => [
             'driver'   => 'sqlsrv',
-            'host'     => env('DB_HOST_SRV'),
+            'host'     => env('DB_HOST_SRV_TWO'),
             'database' => env('DB_DATABASE_SRV_TWO'),
-            'username' => env('DB_USERNAME_SRV'),
-            'password' => env('DB_PASSWORD_SRV'),
+            'username' => env('DB_USERNAME_SRV_TWO'),
+            'password' => env('DB_PASSWORD_SRV_TWO'),
             'charset'  => 'utf8',
             'prefix'   => '',
         ],
