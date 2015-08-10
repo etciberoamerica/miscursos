@@ -33,4 +33,6 @@ Route::post('auth/register', ['as' => 'auth/register', 'uses' => 'Auth\AuthContr
 
 
 
-Route::get('institucion', 'InstitutionController@getInstitutions');
+Route::get('institucion',['as'=>'institucion','uses'=>'InstitutionController@getInstitutions']);
+
+Route::get('auth/state',['as'=>'auth/state','uses'=>'StateController@getState']);

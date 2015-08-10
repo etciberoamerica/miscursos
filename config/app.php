@@ -144,6 +144,8 @@ return [
         misCursos\Providers\EventServiceProvider::class,
         misCursos\Providers\RouteServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
+
 
     ],
 

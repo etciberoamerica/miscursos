@@ -2,16 +2,14 @@
 
 namespace misCursos\Http\Controllers;
 
-use misCursos\Model\Institution;
-use misCursos\Model\Country;
+use misCursos\Model\State;
 
-use Illuminate\Http\Request;
+use Request;
 
 use misCursos\Http\Requests;
 use misCursos\Http\Controllers\Controller;
 
-
-class InstitutionController extends Controller
+class StateController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -89,10 +87,13 @@ class InstitutionController extends Controller
         //
     }
 
-    public function getInstitutions(){
 
-
-
-
+    public function getState(){
+        if(Request::ajax()){
+            $data = [];
+            $data += [0 => '-- Selecciona estado --'];
+            $data += State::getStates(Request::input('id'))->toArray();
+           return $data;
+        }
     }
 }
