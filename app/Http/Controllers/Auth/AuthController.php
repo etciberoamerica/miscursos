@@ -3,6 +3,7 @@
 namespace misCursos\Http\Controllers\Auth;
 
 use misCursos\User;
+use misCursos\Model\Tool;
 use Validator;
 use misCursos\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -43,11 +44,28 @@ class AuthController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:mc_users',
-            'password' => 'required|confirmed|min:6',
+
+        $data= Tool::removeSpace($data);
+        $val=  Validator::make($data, [
+            "Institución"       => "required",
+            'Nombre'            => 'required|max:20|AlphaSpace',
+            'Apellido_Paterno'  => 'required|max:20|alpha',
+            'Apellido_Materno'  => 'required|max:20|alpha',
+            "País"              => "required",
+            'Estado'            => 'required',
+            'Ciudad'            => 'required|max:15|alpha',
+            'Localidad'         => 'required|max:15|alpha',
+            'Genero'            => 'required',
+            'Fecha_nacimiento'  => 'required|date_format:"d/m/Y"',
+            'Email'             => 'required|max:50|email|unique:mc_users',
+            'Password'          => 'required|min:8',
+            'Confirmacion_password'      => 'required|same:Password',
+            'Captcha' => 'required|captcha',
+
         ]);
+
+
+        return $val;
     }
 
     /**
@@ -58,6 +76,8 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
+
+        //dd($data);
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
