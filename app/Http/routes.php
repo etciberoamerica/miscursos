@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/home', function () {
-    return view('auth/home');
-});
+
 
 
 Route::get('/', function () {
@@ -22,7 +20,8 @@ Route::get('/', function () {
 
 
 // Authentication routes...
-Route::get('auth/login', 'Auth\AuthController@getLogin');
+//Route::get('auth/login', 'Auth\AuthController@getLogin');
+Route::get('auth/login', ['as' => '/','uses'=>'Auth\AuthController@getLogin']);
 Route::post('auth/login', ['as' =>'auth/login', 'uses' => 'Auth\AuthController@postLogin']);
 Route::get('auth/logout', ['as' => 'auth/logout', 'uses' => 'Auth\AuthController@getLogout']);
 
@@ -37,3 +36,52 @@ Route::post('auth/register', ['as' => 'auth/register', 'uses' => 'Auth\AuthContr
 Route::get('institucion',['as'=>'institucion','uses'=>'InstitutionController@getInstitutions']);
 
 Route::get('auth/state',['as'=>'auth/state','uses'=>'StateController@getState']);
+
+
+Route::group(['middleware'=>'auth'],function(){
+
+    Route::get('/home', function () {
+        return view('auth/home');
+    });
+
+});
+
+/*
+ * Rutas del estudiante
+ */
+
+Route::group(['middleware'=>'student'],function(){
+
+
+    Route::get('student', function(){
+        print('estudiante');
+    });
+
+});
+
+
+/*
+ * Rutas del docente
+ */
+
+Route::group(['middleware'=>'teach'],function(){
+
+    Route::get('teach',function(){
+        print('teach');
+    });
+
+});
+
+
+/*
+ * Rutas del Administrador
+ */
+
+
+Route::group(['middleware'=>'admin'],function(){
+
+    Route::get('admin',function(){
+        print('admin');
+    });
+
+});

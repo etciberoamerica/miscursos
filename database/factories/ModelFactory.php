@@ -11,7 +11,7 @@
 |
 */
 
-$factory->define(misCursos\User::class, function ($faker) {
+$factory->define(misCursos\Model\User::class, function ($faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->email,

@@ -16,6 +16,7 @@
 
 </head>
 <body>
+@extends('layouts/nav')
 @yield('content')
 <div id="particles"></div>
 </body>

@@ -104,7 +104,7 @@
                         {!! Form::radio('Genero', 'F') !!}Femenino
                         {!! $errors->first('Genero','<p class="error-message">:message</p>') !!}
                     </div>
-                  4  <div class="form-group">
+                    <div class="form-group">
                         * {!! Form::label('fecha nacimiento','Fecha nacimiento') !!}
                         {!! Form::text('Fecha_nacimiento','',['class'=>'form-control','id'=>'datapicker','readonly'=>'readonly']) !!}
                         {!! $errors->first('Fecha_nacimiento','<p class="error-message">:message</p>') !!}

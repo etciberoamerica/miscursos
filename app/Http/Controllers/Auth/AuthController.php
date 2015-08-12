@@ -2,7 +2,8 @@
 
 namespace misCursos\Http\Controllers\Auth;
 
-use misCursos\User;
+use misCursos\Model\User;
+use misCursos\Model\Usermoac;
 use misCursos\Model\Tool;
 use Validator;
 use misCursos\Http\Controllers\Controller;
@@ -22,7 +23,6 @@ class AuthController extends Controller
     |
     */
 
-    protected $redirectTo = '/';
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
@@ -44,6 +44,8 @@ class AuthController extends Controller
      */
     protected function validator(array $data)
     {
+
+
 
         $data= Tool::removeSpace($data);
         $val=  Validator::make($data, [
@@ -77,11 +79,36 @@ class AuthController extends Controller
     protected function create(array $data)
     {
 
-        //dd($data);
+
+        $userMoac = Usermoac::where('email',"'".$data['Email']."'")->get();
+
+        dd($userMoac);
+
+
+
+
+        /*
+
+
         return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
+            'institution_id' => $data['Institución'],
+            'name'           => $data['Nombre'],
+            'last_name'      => $data['Apellido_Paterno'],
+            'last_name_m'    => $data['Apellido_Materno'],
+            'country_id'     => $data['País'],
+            'state_id'       => $data['Estado'],
+            'city'           => $data['Ciudad'],
+            'location'       => $data['Localidad'],
+            'geneder'        => $data['Genero'],
+            'birth_date'     => $data['Fecha_nacimiento'],
+            'email'          => $data['Email'],
+            'password'       => bcrypt($data['Password']),
+            'rol_id'         =>'1'
+        ]);*/
+    }
+
+    public function redirectPath()
+    {
+        return '/home';
     }
 }

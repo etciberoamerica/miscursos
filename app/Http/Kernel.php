@@ -29,5 +29,8 @@ class Kernel extends HttpKernel
         'auth' => \misCursos\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'guest' => \misCursos\Http\Middleware\RedirectIfAuthenticated::class,
+        'student' => \misCursos\Http\Middleware\Student::class,
+        'admin' => \misCursos\Http\Middleware\Admin::class,
+        'teach' => \misCursos\Http\Middleware\Teach::class,
     ];
 }

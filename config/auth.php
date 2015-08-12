@@ -28,7 +28,7 @@ return [
     |
     */
 
-    'model' => misCursos\User::class,
+    'model' => misCursos\Model\User::class,
 
     /*
     |--------------------------------------------------------------------------
