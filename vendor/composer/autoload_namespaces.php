@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'phpDocumentor' => array($vendorDir . '/phpdocumentor/reflection-docblock/src'),
+    'Rap2hpoutre\\LaravelLogViewer\\' => array($vendorDir . '/rap2hpoutre/laravel-log-viewer/src'),
     'Psy\\' => array($vendorDir . '/psy/psysh/src'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log'),
     'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
@@ -19,4 +20,5 @@ return array(
     'Diff' => array($vendorDir . '/phpspec/php-diff/lib'),
     'Cron' => array($vendorDir . '/mtdowling/cron-expression/src'),
     'Carbon' => array($vendorDir . '/nesbot/carbon/src'),
+    'Artisaninweb\\SoapWrapper' => array($vendorDir . '/artisaninweb/laravel-soap/src'),
 );

@@ -20,7 +20,7 @@ class Student
         $user = Auth::user();
         if ($request->ajax()) {
             return response('Unauthorized.', 401);
-        } else if($user->rol_id != 1){
+        } else if($user->rol_id != 3){
             return redirect('/');
         }
         return $next($request);

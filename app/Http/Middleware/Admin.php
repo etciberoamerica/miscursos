@@ -19,7 +19,7 @@ class Admin
         $user = Auth::user();
         if ($request->ajax()) {
             return response('Unauthorized.', 401);
-        } else if($user->rol_id != 3){
+        } else if($user->rol_id != 1){
             return redirect('/');
         }
         return $next($request);

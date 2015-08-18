@@ -145,6 +145,10 @@ return [
         misCursos\Providers\RouteServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
+        Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
+        Prettus\RequestLogger\Providers\LoggerServiceProvider::class,
+        Artisaninweb\SoapWrapper\ServiceProvider::class,
+
 
 
     ],
@@ -196,6 +200,7 @@ return [
         'View'      => Illuminate\Support\Facades\View::class,
         'Form'      => Collective\Html\FormFacade::class,
         'Html'      => Collective\Html\HtmlFacade::class,
+        'SoapWrapper' => Artisaninweb\SoapWrapper\Facades\SoapWrapper::class,
 
     ],
 

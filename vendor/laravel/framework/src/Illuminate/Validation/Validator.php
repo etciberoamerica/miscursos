@@ -968,7 +968,7 @@ class Validator implements ValidatorContract
             return count(array_diff($value, $parameters)) == 0;
         }
 
-        return in_array((string) $value, $parameters);
+        return ! is_array($value) && in_array((string) $value, $parameters);
     }
 
     /**
@@ -1272,19 +1272,6 @@ class Validator implements ValidatorContract
     }
 
     /**
-     * Validate creada para que  acepte espacios y letras.
-     *
-     * @param  string  $attribute
-     * @param  mixed   $value
-     * @return bool
-     */
-
-    protected function validateAlphaSpace($attribute, $value)
-    {
-        return preg_match('/^[\pL\s]+$/u', $value);
-    }
-
-    /**
      * Validate that an attribute contains only alpha-numeric characters.
      *
      * @param  string  $attribute
@@ -1314,6 +1301,12 @@ class Validator implements ValidatorContract
         }
 
         return preg_match('/^[\pL\pM\pN_-]+$/u', $value);
+    }
+
+
+    protected function validateAlphaSpace($attribute, $value)
+    {
+        return preg_match('/^[\pL\s]+$/u', $value);
     }
 
     /**
