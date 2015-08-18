@@ -98,7 +98,7 @@ class AuthController extends Controller
         /*
          * Inicio de registro en tabla de mis cursos
          */
-        /*
+
         $userMC=User::create([
             'institution_id' => $data['Institución'],
             'name'           => $data['Nombre'],
@@ -119,7 +119,7 @@ class AuthController extends Controller
         /*
          * Fin de registro tabla de mis cursos
          */
-        /*
+
         $userMoac = Usermoac::where('email',"'".$data['Email']."'")->first(); //obtiene si existe  usuario en moac
 
         if(!$userMoac){
@@ -135,7 +135,7 @@ class AuthController extends Controller
             $usertts= $rwewtts->id;
         }else{
             abort(411, 'Error de Registro de Usuario tts (Existente)');
-        }*/
+        }
 
         $data += ['idtts' => $usertts];
 
@@ -143,13 +143,13 @@ class AuthController extends Controller
 
         $userEtc = Useretc::execProdcedure($data);
 
-        dd($userEtc);
+        //dd($userEtc);
 
 
 
 
 
-        //return $userMC;
+        return $userMC;
 
     }
 
