@@ -11,16 +11,16 @@
 
 namespace Psy\Test\Util;
 
-use Psy\Util\Str;
+use Psy\Util\String;
 
-class StrTest extends \PHPUnit_Framework_TestCase
+class StringTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider testUnvisProvider
      */
     public function testUnvis($input, $expected)
     {
-        $this->assertEquals($expected, Str::unvis($input));
+        $this->assertEquals($expected, String::unvis($input));
     }
     public function testUnvisProvider()
     {

@@ -2,9 +2,6 @@
 
 namespace Illuminate\Foundation\Auth;
 
-use misCursos\Model\Institution;
-use misCursos\Model\Country;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,27 +14,92 @@ trait RegistersUsers
      *
      * @return \Illuminate\Http\Response
      */
-    public function getRegister()
+    public function postLogin(Request $request)
     {
-        $data = [];
-        $data += ['' => utf8_encode('Selecciona Institución')];
-        $data += Institution::getListIns()->toArray();
+        $this->validate($request, [
+            $this->loginUsername() => 'required', 'password' => 'required',
+        ]);
 
-        //dd(Country::getCountry());
-        $dataIns =[];
-        $dataIns +=['' => utf8_encode('Selecciona País')];
-        $dataIns += Country::getCountry()->toArray();
+        $throttles = in_array(
+            ThrottlesLogins::class, class_uses_recursive(get_class($this))
+        );
 
+        if ($throttles && $this->hasTooManyLoginAttempts($request)) {
+            return $this->sendLockoutResponse($request);
+        }
 
-/*dd($data);
-        exit();*/
-        //return view('auth/register')
+        if (Auth::attempt($this->getCredentials($request), $request->has('remember'))) {
+            if ($throttles) {
+                $this->clearLoginAttempts($request);
+            }
 
+            return redirect()->intended($this->redirectPath());
+        }
 
-        return view('auth.register')
-            ->with('data',$data)
-            ->with('dataIns',$dataIns);
+        if ($throttles) {
+            $this->incrementLoginAttempts($request);
+        }
+
+        return redirect($this->loginPath())
+            ->withInput($request->only($this->loginUsername(), 'remember'))
+            ->withErrors([
+                $this->loginUsername() => $this->getFailedLoginMessage(),
+            ]);
     }
+
+    /**
+     * Get the needed authorization credentials from the request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function getCredentials(Request $request)
+    {
+        return $request->only($this->loginUsername(), 'password');
+    }
+
+    /**
+     * Get the failed login message.
+     *
+     * @return string
+     */
+    protected function getFailedLoginMessage()
+    {
+        return 'Los datos ingresados no coinciden.';
+    }
+
+    /**
+     * Log the user out of the application.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getLogout()
+    {
+        Auth::logout();
+
+        return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/');
+    }
+
+    /**
+     * Get the path to the login route.
+     *
+     * @return string
+     */
+    public function loginPath()
+    {
+        return property_exists($this, 'loginPath') ? $this->loginPath : '/';
+    }
+
+    /**
+     * Get the login username to be used by the controller.
+     *
+     * @return string
+     */
+    public function loginUsername()
+    {
+        return property_exists($this, 'username') ? $this->username : 'email';
+    }
+
 
     /**
      * Handle a registration request for the application.
@@ -50,15 +112,16 @@ trait RegistersUsers
         $validator = $this->validator($request->all());
 
         if ($validator->fails()) {
-            return redirect()->back()->withInput()->withErrors($validator->messages());
-            /*
             $this->throwValidationException(
                 $request, $validator
-            );*/
-
+            );
         }
+        //dd('aqui de prolema');
 
+        dd($this->create($request->all()));
         Auth::login($this->create($request->all()));
+
+
 
         return redirect($this->redirectPath());
     }

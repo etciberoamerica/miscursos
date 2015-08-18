@@ -14,6 +14,15 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-6 col-md-4 col-md-offset-4">
+                @if(count($errors)>0)
+                    <div class="alert alert-danger">
+                        @foreach($errors->all() as $error)
+                            <li>
+                                {!! $error !!}
+                            </li>
+                        @endforeach
+                    </div>
+                @endif
                 <div class="account-wall">
                     <div id="my-tab-content" class="tab-content">
                         <div class="tab-pane active" id="login">

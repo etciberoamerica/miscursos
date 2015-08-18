@@ -16,7 +16,7 @@ namespace Psy\Util;
  *
  * @author ju1ius
  */
-class Str
+class String
 {
     const UNVIS_RX = <<<'EOS'
 /
@@ -67,7 +67,7 @@ EOS;
     }
 
     /**
-     * Callback for Str::unvis.
+     * Callback for String::unvis.
      *
      * @param array $match The matches passed by preg_replace_callback
      *

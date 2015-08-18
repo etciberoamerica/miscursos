@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use InvalidArgumentException;
 use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use PHPUnit_Framework_ExpectationFailedException as PHPUnitException;
 
 trait CrawlerTrait
@@ -39,13 +38,6 @@ trait CrawlerTrait
      * @var array
      */
     protected $inputs = [];
-
-    /**
-     * All of the stored uploads for the current page.
-     *
-     * @var array
-     */
-    protected $uploads = [];
 
     /**
      * Visit the given URI with a GET request.
@@ -143,21 +135,6 @@ trait CrawlerTrait
     }
 
     /**
-     * Send the given request through the application.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return $this
-     */
-    public function handle(Request $request)
-    {
-        $this->currentUri = $request->fullUrl();
-
-        $this->response = $this->app->prepareResponse($this->app->handle($request));
-
-        return $this;
-    }
-
-    /**
      * Make a request to the application and create a Crawler instance.
      *
      * @param  string  $method
@@ -186,15 +163,12 @@ trait CrawlerTrait
      * Make a request to the application using the given form.
      *
      * @param  \Symfony\Component\DomCrawler\Form  $form
-     * @param  array  $uploads
      * @return $this
      */
-    protected function makeRequestUsingForm(Form $form, array $uploads = [])
+    protected function makeRequestUsingForm(Form $form)
     {
-        $files = $this->convertUploadsForTesting($form, $uploads);
-
         return $this->makeRequest(
-            $form->getMethod(), $form->getUri(), $this->extractParametersFromForm($form), [], $files
+            $form->getMethod(), $form->getUri(), $this->extractParametersFromForm($form), [], $form->getFiles()
         );
     }
 
@@ -234,8 +208,6 @@ trait CrawlerTrait
     {
         $this->inputs = [];
 
-        $this->uploads = [];
-
         return $this;
     }
 
@@ -270,11 +242,7 @@ trait CrawlerTrait
     {
         $method = $negate ? 'assertNotRegExp' : 'assertRegExp';
 
-        $rawPattern = preg_quote($text, '/');
-
-        $escapedPattern = preg_quote(e($text), '/');
-
-        $this->$method("/({$rawPattern}|{$escapedPattern})/i", $this->response->getContent());
+        $this->$method('/'.preg_quote($text, '/').'/i', $this->response->getContent());
 
         return $this;
     }
@@ -311,7 +279,7 @@ trait CrawlerTrait
     {
         $this->seeJson();
 
-        if (! is_null($data)) {
+        if (!is_null($data)) {
             return $this->seeJson($data);
         }
     }
@@ -463,7 +431,7 @@ trait CrawlerTrait
 
         $this->assertTrue($headers->has($headerName), "Header [{$headerName}] not present on response.");
 
-        if (! is_null($value)) {
+        if (!is_null($value)) {
             $this->assertEquals(
                 $headers->get($headerName), $value,
                 "Header [{$headerName}] was found, but value [{$headers->get($headerName)}] does not match [{$value}]."
@@ -495,7 +463,7 @@ trait CrawlerTrait
 
         $this->assertTrue($exist, "Cookie [{$cookieName}] not present on response.");
 
-        if (! is_null($value)) {
+        if (!is_null($value)) {
             $this->assertEquals(
                 $cookie->getValue(), $value,
                 "Cookie [{$cookieName}] was found, but value [{$cookie->getValue()}] does not match [{$value}]."
@@ -515,10 +483,10 @@ trait CrawlerTrait
     {
         $link = $this->crawler->selectLink($name);
 
-        if (! count($link)) {
+        if (!count($link)) {
             $link = $this->filterByNameOrId($name, 'a');
 
-            if (! count($link)) {
+            if (!count($link)) {
                 throw new InvalidArgumentException(
                     "Could not find a link with a body, name, or ID attribute of [{$name}]."
                 );
@@ -574,8 +542,6 @@ trait CrawlerTrait
      */
     protected function attach($absolutePath, $element)
     {
-        $this->uploads[$element] = $absolutePath;
-
         return $this->storeInput($element, $absolutePath);
     }
 
@@ -587,7 +553,7 @@ trait CrawlerTrait
      */
     protected function press($buttonText)
     {
-        return $this->submitForm($buttonText, $this->inputs, $this->uploads);
+        return $this->submitForm($buttonText, $this->inputs);
     }
 
     /**
@@ -595,12 +561,11 @@ trait CrawlerTrait
      *
      * @param  string  $buttonText
      * @param  array  $inputs
-     * @param  array  $uploads
      * @return $this
      */
-    protected function submitForm($buttonText, $inputs = [], $uploads = [])
+    protected function submitForm($buttonText, $inputs = [])
     {
-        $this->makeRequestUsingForm($this->fillForm($buttonText, $inputs), $uploads);
+        $this->makeRequestUsingForm($this->fillForm($buttonText, $inputs));
 
         return $this;
     }
@@ -614,7 +579,7 @@ trait CrawlerTrait
      */
     protected function fillForm($buttonText, $inputs = [])
     {
-        if (! is_string($buttonText)) {
+        if (!is_string($buttonText)) {
             $inputs = $buttonText;
 
             $buttonText = null;
@@ -672,7 +637,7 @@ trait CrawlerTrait
     {
         $crawler = $this->filterByNameOrId($filter);
 
-        if (! count($crawler)) {
+        if (!count($crawler)) {
             throw new InvalidArgumentException(
                 "Nothing matched the filter [{$filter}] CSS query provided for [{$this->currentUri}]."
             );
@@ -707,8 +672,6 @@ trait CrawlerTrait
      */
     public function call($method, $uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
     {
-        $kernel = $this->app->make('Illuminate\Contracts\Http\Kernel');
-
         $this->currentUri = $this->prepareUrlForRequest($uri);
 
         $request = Request::create(
@@ -716,11 +679,7 @@ trait CrawlerTrait
             $cookies, $files, $server, $content
         );
 
-        $response = $kernel->handle($request);
-
-        $kernel->terminate($request, $response);
-
-        return $this->response = $response;
+        return $this->response = $this->app->make('Illuminate\Contracts\Http\Kernel')->handle($request);
     }
 
     /**
@@ -794,7 +753,7 @@ trait CrawlerTrait
             $uri = substr($uri, 1);
         }
 
-        if (! Str::startsWith($uri, 'http')) {
+        if (!Str::startsWith($uri, 'http')) {
             $uri = $this->baseUrl.'/'.$uri;
         }
 
@@ -810,56 +769,16 @@ trait CrawlerTrait
     protected function transformHeadersToServerVars(array $headers)
     {
         $server = [];
-        $prefix = 'HTTP_';
 
         foreach ($headers as $name => $value) {
-            $name = strtr(strtoupper($name), '-', '_');
-
-            if (! starts_with($name, $prefix) && $name != 'CONTENT_TYPE') {
-                $name = $prefix.$name;
+            if (!starts_with($name, 'HTTP_')) {
+                $name = 'HTTP_'.strtr(strtoupper($name), '-', '_');
             }
 
             $server[$name] = $value;
         }
 
         return $server;
-    }
-
-    /**
-     * Convert the given uploads to UploadedFile instances.
-     *
-     * @param  \Symfony\Component\DomCrawler\Form  $form
-     * @param  array  $uploads
-     * @return array
-     */
-    protected function convertUploadsForTesting(Form $form, array $uploads)
-    {
-        $files = $form->getFiles();
-
-        $names = array_keys($files);
-
-        $files = array_map(function (array $file, $name) use ($uploads) {
-            return isset($uploads[$name])
-                        ? $this->getUploadedFileForTesting($file, $uploads, $name)
-                        : $file;
-        }, $files, $names);
-
-        return array_combine($names, $files);
-    }
-
-    /**
-     * Create an UploadedFile instance for testing.
-     *
-     * @param  array  $file
-     * @param  array  $uploads
-     * @param  string  $name
-     * @return \Symfony\Component\HttpFoundation\File\UploadedFile
-     */
-    protected function getUploadedFileForTesting($file, $uploads, $name)
-    {
-        return new UploadedFile(
-            $file['tmp_name'], basename($uploads[$name]), $file['type'], $file['size'], $file['error'], true
-        );
     }
 
     /**

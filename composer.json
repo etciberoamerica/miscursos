@@ -6,7 +6,8 @@
     "type": "project",
     "require": {
         "php": ">=5.5.9",
-        "laravel/framework": "5.1.*"
+        "laravel/framework": "5.1.5",
+        "rap2hpoutre/laravel-log-viewer": "^0.4.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -14,7 +15,9 @@
         "phpunit/phpunit": "~4.0",
         "phpspec/phpspec": "~2.1",
         "laravelcollective/html": "5.1.*",
-        "anhskohbo/no-captcha": "2.*"
+        "anhskohbo/no-captcha": "2.*",
+        "prettus/laravel-request-logger": "1.0.*",
+        "artisaninweb/laravel-soap": "0.2.*"
     },
     "autoload": {
         "classmap": [

@@ -17,7 +17,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @var string
      */
-    protected $table = 'mc_users';
+    protected $table = 'dbo.mc_users';
+    public $timestamps = true;
 
     /**
      * The attributes that are mass assignable.

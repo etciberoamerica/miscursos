@@ -150,10 +150,10 @@
     $(document).ready(function(){
 
         $('#datapicker').datepicker({
-            format: "dd/mm/yyyy",
+            format: "dd-mm-yyyy",
             startView: 2,
             language: "es",
-            endDate:"{!! date('d/m/Y') !!}}"
+            endDate:"{!! date('d-m-Y') !!}}"
         });
 
         $('#id_pais').unbind().bind('change',function(){

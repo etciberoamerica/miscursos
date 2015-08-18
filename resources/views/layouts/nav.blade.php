@@ -8,7 +8,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button> -->
-            <a class="navbar-brand" href="{!! route('/') !!}">Mis Cursos</a>
+            <a class="navbar-brand" href="{!! route('home') !!}">Mis Cursos</a>
         </div>
         @if(Auth::user())
         <div class="collapse navbar-collapse" id="navbar">

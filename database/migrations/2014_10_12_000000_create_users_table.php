@@ -16,20 +16,22 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->integer('institution_id')->unsigned();
             $table->string('name');
-            $table->string('last_name');
-            $table->string('last_name_m');
+            $table->string('last_name')->nullable();
+            $table->string('last_name_m')->nullable();
             $table->integer('country_id')->unsigned();
             $table->integer('state_id')->unsigned();
-            $table->string('city');
-            $table->string('location');
-            $table->enum('geneder',['M','F']);
-            $table->dateTime('birth_date');
-            $table->string('email')->unique();
+            $table->string('city')->nullable();
+            $table->string('location')->nullable();
+            $table->enum('geneder',['M','F'])->nullable();;
+            $table->dateTime('birth_date')->nullable();
+            $table->string('email')->nullable();
             $table->string('password', 60);
             $table->boolean('actived')->default('1');
             $table->integer('rol_id')->default('1');
             $table->rememberToken();
-            $table->timestamps();
+            $table->dateTimeTz('created_at')->nullable();
+            $table->dateTimeTz('updated_at')->nullable();
+            //$table->timestamps();
         });
     }
 

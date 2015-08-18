@@ -16,12 +16,19 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
-        $user = Auth::user();
-        if ($request->ajax()) {
-            return response('Unauthorized.', 401);
-        } else if($user->rol_id != 3){
+        //dd(Auth::user());
+        if(!Auth::user()){
             return redirect('/');
+
+        }else{
+            $user = Auth::user()->rol_id;
+            if ($request->ajax()) {
+                return response('Unauthorized.', 401);
+            } else if($user != 1){
+                return redirect('/');
+            }
+            return $next($request);
         }
-        return $next($request);
+
     }
 }

@@ -16,12 +16,18 @@ class Teach
      */
     public function handle($request, Closure $next)
     {
-        $user = Auth::user();
-        if ($request->ajax()) {
-            return response('Unauthorized.', 401);
-        } else if($user->rol_id != 2){
+        if(!Auth::user()){
             return redirect('/');
+        }else {
+            $user = Auth::user();
+            if ($request->ajax()) {
+                return response('Unauthorized.', 401);
+            } else if($user->rol_id != 2){
+                return redirect('/');
+            }
+            return $next($request);
         }
-        return $next($request);
+
+
     }
 }

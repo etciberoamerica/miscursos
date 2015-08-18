@@ -13,15 +13,25 @@
 
 
 
+Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
-Route::get('/', function () {
-    return view('login');
-});
+
+Route::get('/', ['as'=>'home','uses'=>'Auth\AuthController@redirectPath']);
+
+
+Route::get('web',['as'=>'web','uses'=>'Auth\AuthController@webServicesDate']);
+
+
+
+
+
+
+
 
 
 // Authentication routes...
 //Route::get('auth/login', 'Auth\AuthController@getLogin');
-Route::get('auth/login', ['as' => '/','uses'=>'Auth\AuthController@getLogin']);
+Route::get('/', ['as' => 'auth/login','uses'=>'Auth\AuthController@getLogin']);
 Route::post('auth/login', ['as' =>'auth/login', 'uses' => 'Auth\AuthController@postLogin']);
 Route::get('auth/logout', ['as' => 'auth/logout', 'uses' => 'Auth\AuthController@getLogout']);
 
@@ -40,9 +50,7 @@ Route::get('auth/state',['as'=>'auth/state','uses'=>'StateController@getState'])
 
 Route::group(['middleware'=>'auth'],function(){
 
-    Route::get('/home', function () {
-        return view('auth/home');
-    });
+
 
 });
 
@@ -54,7 +62,7 @@ Route::group(['middleware'=>'student'],function(){
 
 
     Route::get('student', function(){
-        print('estudiante');
+        return view('users/home');
     });
 
 });
@@ -67,7 +75,7 @@ Route::group(['middleware'=>'student'],function(){
 Route::group(['middleware'=>'teach'],function(){
 
     Route::get('teach',function(){
-        print('teach');
+        return view('users/home');
     });
 
 });
@@ -81,7 +89,7 @@ Route::group(['middleware'=>'teach'],function(){
 Route::group(['middleware'=>'admin'],function(){
 
     Route::get('admin',function(){
-        print('admin');
+        return view('users/home');
     });
 
 });
