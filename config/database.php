@@ -96,6 +96,17 @@ return [
             'prefix'   => '',
         ],
 
+        'sqlsrv_three' => [
+            'driver'   => 'sqlsrv',
+            'host'     => env('DB_HOST_SRV_THREE'),
+            'database' => env('DB_DATABASE_SRV_THREE'),
+            'username' => env('DB_USERNAME_SRV_THREE'),
+            'password' => env('DB_PASSWORD_SRV_THREE'),
+            'charset'  => 'utf8',
+            'prefix'   => '',
+        ],
+
+
     ],
 
     /*

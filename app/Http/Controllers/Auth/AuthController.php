@@ -2,18 +2,23 @@
 
 namespace misCursos\Http\Controllers\Auth;
 
+
 use misCursos\Model\User;
+use misCursos\Model\Useretc;
 use misCursos\Model\Usermoac;
 use misCursos\Model\Institution;
 use misCursos\Model\Country;
 use misCursos\Model\Tool;
+use misCursos\Model\Usertts;
 use Validator;
 use misCursos\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
+use misCursos\Http\Controllers\UsermoacController;
+use misCursos\Http\Controllers\UserttsController;
 
-use Artisaninweb\SoapWrapper\Facades\SoapWrapper;
+
 
 class AuthController extends Controller
 {
@@ -63,7 +68,7 @@ class AuthController extends Controller
             'Ciudad'            => 'required|max:15|alpha',
             'Localidad'         => 'required|max:15|alpha',
             'Genero'            => 'required',
-            'Fecha_nacimiento'  => 'required|date_format:"d/m/Y"',
+            'Fecha_nacimiento'  => 'required|date_format:"d-m-Y"',
             'Email'             => 'required|max:50|email|unique:mc_users',
             'Password'          => 'required|min:8',
             'Confirmacion_password'      => 'required|same:Password',
@@ -84,56 +89,17 @@ class AuthController extends Controller
     /*
      * function create for webservices moac insert user
      */
-    public function webServicesDate(array $data)
-    {
-        SoapWrapper::add(function ($service) {
-            $service->name('currency')->wsdl('http://moac.etclatam.com/WSMOAC10/MOAC_Service.asmx?WSDL')
-                ->trace(true)
-                ->cache(WSDL_CACHE_NONE)
-                ->options(['password' => 'PasswordSavingStudentDataMoac10']);
-        });
-        $data = array(
-            'Nombre' => $data['Nombre'],
-            'Apellidos' => $data['Apellido_Paterno'].' '.$data['Apellido_Materno'],
-            'Pais' => $data['País'],
-            'Estado' => $data['Estado'],
-            'FechaNacimiento' => $data['Fecha_nacimiento'],
-            'Telefono' => '0',
-            'CodigoPostal' => '0',
-            'Direccion' => 'N/A',
-            'Localidad' => 'localidaW',
-            'Ciudad' => $data['Localidad'],
-            'Usuario' => $data['Email'],
-            'Contrasenia' => $data['Password'],
-            'Pregunta' => 'N/A',
-            'Respuesta' => 'N/A',
-        );
-        $parametros =array('password'=>'PasswordSavingStudentDataMoac10','Alumno'=>$data);
-        $s =SoapWrapper::service('currency', function ($service) use ($parametros,&$response) {
-            $response =$service->call('MOAC_GuardarDatosPersonalesAlumno' , [$parametros]);
-        });
-        $respuesta =$response->MOAC_GuardarDatosPersonalesAlumnoResult->identificador;
-        if($respuesta != 0){
-            abort(408, 'Error de Registro de Usuario moac');
-        }else{
-            return true;
-        }
-    }
 
     protected function create(array $data)
     {
-        $rweb =false;
-        $userMoac = Usermoac::where('email',"'".$data['Email']."'")->first();
-        //dd($userMoac);
-        if(!$userMoac){
-            //dd('envia al web');
-            $rweb =$this->webServicesDate($data);
-            //dd($rweb);
-        }else{
-            abort(409, 'Error de Registro de Usuario moac (Existente)');
-        }
+        $usertts=1;
 
-        return User::create([
+       // dd($data);
+        /*
+         * Inicio de registro en tabla de mis cursos
+         */
+        /*
+        $userMC=User::create([
             'institution_id' => $data['Institución'],
             'name'           => $data['Nombre'],
             'last_name'      => $data['Apellido_Paterno'],
@@ -150,7 +116,41 @@ class AuthController extends Controller
             'created_at'     =>date("Y/m/d H:i:s"),
             'updated_at'     =>date("Y/m/d H:i:s")
         ]);
-        // }
+        /*
+         * Fin de registro tabla de mis cursos
+         */
+        /*
+        $userMoac = Usermoac::where('email',"'".$data['Email']."'")->first(); //obtiene si existe  usuario en moac
+
+        if(!$userMoac){
+            $rweb = UsermoacController::webServicesDate($data); //llamada a la peticion del webservices de moac
+        }else{
+            abort(409, 'Error de Registro de Usuario moac (Existente)');
+        }
+
+        $userTts = Usertts::getData($data);
+
+        if(!$userTts){
+            $rwewtts= UserttsController::registerDate($data);
+            $usertts= $rwewtts->id;
+        }else{
+            abort(411, 'Error de Registro de Usuario tts (Existente)');
+        }*/
+
+        $data += ['idtts' => $usertts];
+
+        //dd($data);
+
+        $userEtc = Useretc::execProdcedure($data);
+
+        dd($userEtc);
+
+
+
+
+
+        //return $userMC;
+
     }
 
     public function getRegister()

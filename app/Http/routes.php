@@ -11,6 +11,10 @@
 |
 */
 
+Route::get('insert',['as'=>'insert', 'uses' => 'UseretcController@getProcedure']);
+Route::get('us',['as'=>'us', 'uses' => 'UseretcController@getData']);
+
+
 
 
 
