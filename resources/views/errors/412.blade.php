@@ -12,9 +12,9 @@
                     <h1>
                         Oops!</h1>
                     <h2>
-                        410 ingreso de usuario tts</h2>
+                        412 ingreso de usuario ciidte (existente)</h2>
                     <div class="error-details">
-                        lo sentimos ocurrio un error, contacte al administrador con el numero de error <b>410</b>!
+                        lo sentimos ocurrio un error, contacte al administrador con el numero de error <b>412</b>!
                     </div>
                     <div class="error-actions">
                         <a href="#" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-home"></span>

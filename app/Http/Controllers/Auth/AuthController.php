@@ -119,36 +119,26 @@ class AuthController extends Controller
         /*
          * Fin de registro tabla de mis cursos
          */
-
-        $userMoac = Usermoac::where('email',"'".$data['Email']."'")->first(); //obtiene si existe  usuario en moac
-
-        if(!$userMoac){
-            $rweb = UsermoacController::webServicesDate($data); //llamada a la peticion del webservices de moac
-        }else{
-            abort(409, 'Error de Registro de Usuario moac (Existente)');
-        }
-
-        $userTts = Usertts::getData($data);
-
-        if(!$userTts){
-            $rwewtts= UserttsController::registerDate($data);
-            $usertts= $rwewtts->id;
-        }else{
-            abort(411, 'Error de Registro de Usuario tts (Existente)');
-        }
-
-        $data += ['idtts' => $usertts];
-
-        //dd($data);
-
-        $userEtc = Useretc::execProdcedure($data);
-
-        //dd($userEtc);
-
-
-
-
-
+        $email= $data['Email'];
+        $userMoac = Usermoac::where('email',$email)->first(); //obtiene si existe  usuario en moac
+                if(!$userMoac){
+                    $rweb = UsermoacController::webServicesDate($data); //llamada a la peticion del webservices de moac
+                }else{
+                    abort(409, 'Error de Registro de Usuario moac (Existente)');
+                }
+                $userTts = Usertts::getData($data);
+                if(!$userTts){
+                    $rwewtts= UserttsController::registerDate($data);
+                    $usertts= $rwewtts->id;
+                }else{
+                    abort(411, 'Error de Registro de Usuario tts (Existente)');
+                }
+                $data += ['tts_id' => $usertts];
+                $ciidte_id = Useretc::execProcedure($data);
+                $data += ['ciidte_id' => $ciidte_id];
+                is_null($userMoac)? $moad_id=1 : $moad_id=$userMoac->id ;
+                $data += ['moac_id' => $ciidte_id];
+                User::execProcedure($data);
         return $userMC;
 
     }

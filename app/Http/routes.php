@@ -10,6 +10,8 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+
 
 Route::get('insert',['as'=>'insert', 'uses' => 'UseretcController@getProcedure']);
 Route::get('us',['as'=>'us', 'uses' => 'UseretcController@getData']);

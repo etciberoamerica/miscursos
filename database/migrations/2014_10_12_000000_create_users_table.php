@@ -15,6 +15,7 @@ class CreateUsersTable extends Migration
         Schema::create('mc_users', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('institution_id')->unsigned();
+            $table->string('user_name')->nullable();
             $table->string('name');
             $table->string('last_name')->nullable();
             $table->string('last_name_m')->nullable();
@@ -28,10 +29,15 @@ class CreateUsersTable extends Migration
             $table->string('password', 60);
             $table->boolean('actived')->default('1');
             $table->integer('rol_id')->default('1');
+            $table->integer('gmetrix_id')->unsigned();
+            $table->integer('ciidte_id')->unsigned();
+            $table->integer('moac_id')->unsigned();
+            $table->integer('tts_id')->unsigned();
+            $table->integer('sci_id')->unsigned();
             $table->rememberToken();
-            $table->dateTimeTz('created_at')->nullable();
-            $table->dateTimeTz('updated_at')->nullable();
-            //$table->timestamps();
+            //$table->dateTimeTz('created_at')->nullable();
+            //$table->dateTimeTz('updated_at')->nullable();
+            $table->timestamps();
         });
     }
 

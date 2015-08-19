@@ -8,6 +8,8 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
+use DB;
+
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
     use Authenticatable, CanResetPassword;
@@ -61,4 +63,43 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+    public static  function execProcedure(array $data){
+        /*
+         * EXEC creausuarioTemp'".$login_usuario."','".$contra."','".$email_usuario."','".$campo."','".$idNewS."','".$nombre_usuario." ".$appaterno_usuario." ".$apmaterno_usuario."','".$idTTS."','".$institucion_id."'"
+         */
+
+        //$idNewS = $data['moac_id'];
+        //$campo = $data['ciidte_id'];
+        if($data['Genero'] =='M'){
+            $genero="Masculino";
+        }else{
+            $genero='Femenino';
+        }
+        $telefono =12345678;
+
+        try{
+            $res= DB::connection('')->select('EXEC creausuarioTemp ?,?,?,?,?,?,?,?,?,?',
+                array($data['Email'],
+                    bcrypt($data['Password']),
+                    $data['Email'],
+                    $data['ciidte_id'],
+                    $data['moac_id'],
+                    $data['Nombre'],
+                    $data['Apellido_Paterno'],
+                    $data['Apellido_Materno'],
+                    $data['tts_id'],
+                    $data['Institución']));
+
+
+        }catch (ValidationException $e){
+            $e->getError();
+            abort('410','Update');
+        }
+
+
+
+
+
+    }
 }

@@ -23,27 +23,27 @@ class Useretc extends Model
 
     }
 
-    public static  function execProdcedure(array $data){
+    public static  function execProcedure(array $data){
         if($data['Genero'] =='M'){
             $genero="Masculino";
         }else{
             $genero='Femenino';
         }
         $telefono =12345678;
+
         try{
-            $pdo =DB::connection('mysql_one')->getPdo();
-            $stmt = $pdo ->exec('CALL AgregarAlumnoV2(
-                        '.$data['Institución'].',
-                        "'.$data['Nombre'].'",
-                        "'.$data['Apellido_Paterno'].'",
-                        "'.$data['Apellido_Materno'].'",
-                        "'.$genero.'",
-                        "'.$data['Fecha_nacimiento'].'",
-                        "'.$telefono.'",
-                        "'.$data['Email'].'",
-                        "'.$data['Email'].'",
-                        "'.$data['Password'].'")');
-            return true;
+            $res= DB::connection('mysql_one')->select('CALL AgregarAlumnoV2(?,?,?,?,?,?,?,?,?,?)',
+                array(
+                    $data['Institución'],
+                    $data['Nombre'],
+                    $data['Apellido_Paterno'], $data['Apellido_Materno'],
+                    $genero, $data['Fecha_nacimiento'], $telefono, $data['Email'], $data['Email'], $data['Password']));
+
+            foreach( $res  as $r){
+                return $r->salida;
+                break;
+            }
+
         }catch (ValidationException $e){
             $e->getError();
             abort('412','Ingreso de usuario ciidte');
