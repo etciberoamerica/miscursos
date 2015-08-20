@@ -57,9 +57,9 @@ use Symfony\Component\Translation\Loader\ArrayLoader;
  * @method CarbonInterval week() week($weeks = 1) Alias for weeks().
  * @method CarbonInterval days() days($days = 1) Set the days portion of the current interval.
  * @method CarbonInterval dayz() dayz($days = 1) Alias for days().
- * @method CarbonInterval day() day($days = 1) Alias for days().
- * @method CarbonInterval hours() hours($hours = 1) Set the hours portion of the current interval.
- * @method CarbonInterval hour() hour($hours = 1) Alias for hours().
+ * @method CarbonInterval day() //day($days = 1) Alias for days().
+ * @method CarbonInterval hours() //hours($hours = 1) Set the hours portion of the current interval.
+ * @method CarbonInterval hour() //hour($hours = 1) Alias for hours().
  * @method CarbonInterval minutes() minutes($minutes = 1) Set the minutes portion of the current interval.
  * @method CarbonInterval minute() minute($minutes = 1) Alias for minutes().
  * @method CarbonInterval seconds() seconds($seconds = 1) Set the seconds portion of the current interval.

@@ -20,10 +20,10 @@ Route::get('us',['as'=>'us', 'uses' => 'UseretcController@getData']);
 
 
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('login');
-});
-
+});*/
+Route::get('/', ['as' => '/','uses'=>'Auth\AuthController@getLogin']);
 
 // Authentication routes...
 //Route::get('auth/login', 'Auth\AuthController@getLogin');
@@ -88,6 +88,15 @@ Route::group(['middleware'=>'admin'],function(){
 
     Route::get('admin',function(){
         print('admin');
+    });
+
+});
+
+
+Route::group(['middleware'=>'adviser'],function(){
+
+    Route::get('adviser',function(){
+        print('adviser');
     });
 
 });

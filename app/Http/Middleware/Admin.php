@@ -16,10 +16,10 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
-        $user = Auth::user();
+        $user = is_null(Auth::user())? $user=0 : $user=Auth::user()->rol_id;
         if ($request->ajax()) {
             return response('Unauthorized.', 401);
-        } else if($user->rol_id != 1){
+        } else if($user != 1){
             return redirect('/');
         }
         return $next($request);

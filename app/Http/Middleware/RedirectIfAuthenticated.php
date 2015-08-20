@@ -4,6 +4,7 @@ namespace misCursos\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\Auth;
 
 class RedirectIfAuthenticated
 {
@@ -35,9 +36,35 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next)
     {
         if ($this->auth->check()) {
-            return redirect('/home');
+            //
+           $user = Auth::user()->rol_id;
+                switch($user){
+                    case 1:
+                        return redirect('/admin');
+                        break;
+                    case 2:
+                        return redirect('/teach');
+                        break;
+                    case 3:
+                        return redirect('/student');
+                        break;
+                    case 4:
+                        return redirect('/adviser');
+                        break;
+                    default:
+                        return redirect('/home');
+                        break;
+                }
+
+
+
+
+            //
+            //return redirect('/home');
+        }else{
+            return $next($request);
         }
 
-        return $next($request);
+
     }
 }

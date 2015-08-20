@@ -231,7 +231,7 @@ class Carbon extends DateTime
      */
     public static function instance(DateTime $dt)
     {
-        return new static($dt->format('Y-m-d H:i:s.u'), $dt->getTimeZone());
+        return new static($dt->format('Y-m-d H:i:s'), $dt->getTimeZone());
     }
 
     /**

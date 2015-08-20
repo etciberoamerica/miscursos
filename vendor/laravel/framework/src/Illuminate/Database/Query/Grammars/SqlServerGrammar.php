@@ -206,7 +206,7 @@ class SqlServerGrammar extends Grammar
      */
     public function getDateFormat()
     {
-        return 'Y-m-d H:i:s.000';
+        return 'Ymd H:i:s.000';
     }
 
     /**

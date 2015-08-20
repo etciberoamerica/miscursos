@@ -2,12 +2,15 @@
 
 use Illuminate\Database\Seeder;
 use misCursos\Model\User;
+use Carbon\Carbon;
 
 class UserTableSeeder extends Seeder
 {
     public function run()
     {
+
         $this->createUser();
+
     }
 
 
@@ -18,6 +21,7 @@ class UserTableSeeder extends Seeder
             'last_name' => 'p1@etc.com',
             'password' =>  bcrypt('123456'),
             'institution_id' => 1,
+            'birth_date' => Carbon::now()->format('Ymd H:m:s'),
             'country_id' =>1,
             'state_id' => 1,
             'rol_id' => 1
@@ -30,6 +34,7 @@ class UserTableSeeder extends Seeder
             'password' =>  bcrypt('123456'),
             'institution_id' => 1,
             'country_id' =>1,
+            'birth_date' => Carbon::now()->format('Ymd H:m:s'),
             'state_id' =>1,
             'rol_id' => 2
 
@@ -43,8 +48,19 @@ class UserTableSeeder extends Seeder
             'institution_id' => 1,
             'country_id' =>1,
             'state_id' =>1,
+            'birth_date' => Carbon::now()->format('Ymd H:m:s'),
             'rol_id' => 3
+        ]);
 
+        User::create([
+            'name'   =>   'p4@etc.com',
+            'email'   =>   'p4@etc.com',
+            'password' =>  bcrypt('123456'),
+            'institution_id' => 1,
+            'country_id' =>1,
+            'state_id' =>1,
+            'birth_date' => Carbon::now()->format('Ymd H:m:s'),
+            'rol_id' => 4
 
         ]);
 
