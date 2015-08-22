@@ -18,6 +18,6 @@
 <body>
 @extends('layouts/nav')
 @yield('content')
-<div id="particles"></div>
+<!-- <div id="particles"></div> -->
 </body>
 </html>

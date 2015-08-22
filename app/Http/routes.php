@@ -50,6 +50,10 @@ Route::group(['middleware'=>'auth'],function(){
         return view('auth/home');
     });
 
+
+    Route::get('find/product',['as'=> 'find/product','uses'=>'ProductoetcController@findAll']);
+
+
 });
 
 /*
@@ -58,10 +62,7 @@ Route::group(['middleware'=>'auth'],function(){
 
 Route::group(['middleware'=>'student'],function(){
 
-
-    Route::get('student', function(){
-        print('estudiante');
-    });
+    Route::get('student',['as'=> 'student', 'uses'=>'UserController@student']);
 
 });
 
@@ -72,9 +73,7 @@ Route::group(['middleware'=>'student'],function(){
 
 Route::group(['middleware'=>'teach'],function(){
 
-    Route::get('teach',function(){
-        print('teach');
-    });
+    Route::get('teacher',['as'=>'teacher','uses'=>'UserController@teacher']);
 
 });
 
@@ -86,17 +85,13 @@ Route::group(['middleware'=>'teach'],function(){
 
 Route::group(['middleware'=>'admin'],function(){
 
-    Route::get('admin',function(){
-        print('admin');
-    });
+    Route::get('admin',['as'=>'admin','uses'=>'UserController@admin']);
 
 });
 
 
 Route::group(['middleware'=>'adviser'],function(){
 
-    Route::get('adviser',function(){
-        print('adviser');
-    });
+    Route::get('adviser',['as'=>'adviser','uses'=>'UserController@adviser']);
 
 });

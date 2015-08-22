@@ -36,14 +36,15 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next)
     {
         if ($this->auth->check()) {
-            //
+
            $user = Auth::user()->rol_id;
+
                 switch($user){
                     case 1:
                         return redirect('/admin');
                         break;
                     case 2:
-                        return redirect('/teach');
+                        return redirect('/teacher');
                         break;
                     case 3:
                         return redirect('/student');
@@ -56,11 +57,6 @@ class RedirectIfAuthenticated
                         break;
                 }
 
-
-
-
-            //
-            //return redirect('/home');
         }else{
             return $next($request);
         }
