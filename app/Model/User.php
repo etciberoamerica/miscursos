@@ -28,6 +28,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     protected $fillable = [
             'institution_id',
+            'user_name',
             'name',
             'last_name',
             'last_name_m',
@@ -39,23 +40,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             'birth_date',
             'email',
             'password',
-            'rol_id'];
+            'actived',
+            'rol_id',
+            'gmetrix_id',
+            'ciidte_id',
+            'moac_id',
+            'tts_id',
+            'sci_id'
+    ];
 
-    /*
-     * array(
-     * 'institution_id' => '472',
-     * 'name' => 'sss',
-     * 'last_name' => 'ssssss',
-     * 'last_name_m' => 'rrrrrrrrrrrrr',
-     * 'country_id' => '57',
-     * 'state_id' => '0',
-     * 'city' => 'sss', 'location' => 'rrrrrrrrrr',
-     * 'geneder' => 'M',
-     * 'birth_date' => '17/07/2015',
-     * 'email' => 'etc@etc.com',
-     * 'password' => '$2y$10$Vqz.De1N/ZkU.c8xgA7UUurfvhaPpOodvrzGWWw4WEpdosmfvguDu',
-     * 'rol_id' => '1')
-     */
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -65,19 +58,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     protected $hidden = ['password', 'remember_token'];
 
     public static  function execProcedure(array $data){
-        /*
-         * EXEC creausuarioTemp'".$login_usuario."','".$contra."','".$email_usuario."','".$campo."','".$idNewS."','".$nombre_usuario." ".$appaterno_usuario." ".$apmaterno_usuario."','".$idTTS."','".$institucion_id."'"
-         */
-
-        //$idNewS = $data['moac_id'];
-        //$campo = $data['ciidte_id'];
         if($data['Genero'] =='M'){
             $genero="Masculino";
         }else{
             $genero='Femenino';
         }
         $telefono =12345678;
-
         try{
             $res= DB::connection('')->select('EXEC creausuarioTemp ?,?,?,?,?,?,?,?,?,?',
                 array($data['Email'],
@@ -90,8 +76,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                     $data['Apellido_Materno'],
                     $data['tts_id'],
                     $data['Institución']));
-
-
         }catch (ValidationException $e){
             $e->getError();
             abort('410','Update');

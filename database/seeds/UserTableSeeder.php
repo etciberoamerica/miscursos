@@ -36,7 +36,8 @@ class UserTableSeeder extends Seeder
             'country_id' =>1,
             'birth_date' => Carbon::now()->format('Ymd H:m:s'),
             'state_id' =>1,
-            'rol_id' => 2
+            'rol_id' => 2,
+            'institution_id' => 472
 
 
         ]);

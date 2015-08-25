@@ -2,15 +2,19 @@
 
 namespace misCursos\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use misCursos\Model\User;
 use misCursos\Model\Productoetc;
 use misCursos\Model\Group;
 use misCursos\Model\Tool;
+use misCursos\Model\Groupetc;
 
 use Illuminate\Http\Request;
 
 use misCursos\Http\Requests;
 use misCursos\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller
 {
@@ -19,6 +23,9 @@ class UserController extends Controller
      *
      * @return Response
      */
+
+
+    protected $error = false;
     public function index()
     {
         //
@@ -107,10 +114,7 @@ class UserController extends Controller
      * Inicio de funciones de docente
      */
     public function teacher(){
-        $key =Tool::generateKey(['LEN'=>10,'MI'=>false,'MA'=>true,'NU'=>true,'CA'=>false]);
-
-
-
+        //dd(Auth::user());
         $productos = [];
         $productos += [''=>'Seleccione producto'];
         $productos += Productoetc::getListPro()->toArray();
@@ -121,6 +125,51 @@ class UserController extends Controller
 
 
         return view('teacher.teacher',compact('productos','gra'));
+    }
+
+    public function groupRegister(Request $request){
+        //dd($request->all());
+
+        $g =[];
+        $g +=$request->all();
+        $g +=['key'=>Tool::generateKey(['LEN'=>10,'MI'=>false,'MA'=>true,'NU'=>true,'CA'=>false])];
+        $data= Tool::removeSpace($g);
+
+        //dd(Groupetc::where('keygroup_grupo',$data['key'])->first());
+
+        //dd($data);
+        //dd(count($data['Products']));
+
+        $validator= Validator::make($data,[
+            'Producto'      => 'required|numeric',
+            'Grado'         => 'required|numeric',
+            'Grupo'         => 'required|max:20|alpha_dash',
+            'Descripción'   => 'required|max:20|alpha_dash',
+            'key'           => 'required|max:10',
+            'Products'      => 'array'
+
+        ]);
+
+        if($validator->fails()){
+            //dd($validator->messages());
+            //dd($validator->messages());
+                    $error=1;
+                 return Redirect::back()->withInput()->withErrors($validator->messages())->with('error',$error);
+
+        }
+
+
+        dd($data);
+
+        foreach($data['Products'] as $key => $data){
+            print_r($data);
+
+        }
+        exit();
+
+
+
+
     }
 
     /*

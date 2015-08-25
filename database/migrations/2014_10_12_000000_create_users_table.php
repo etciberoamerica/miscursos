@@ -20,9 +20,9 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('last_name')->nullable();
             $table->string('last_name_m')->nullable();
-            $table->integer('country_id')->unsigned();
-            $table->integer('state_id')->unsigned();
-            $table->string('city')->nullable();
+            $table->integer('country_id')->unsigned()->nullable();
+            $table->integer('state_id')->unsigned()->nullable();
+            $table->string('city')->nullable()->nullable();
             $table->string('location')->nullable();
             $table->enum('geneder',['M','F'])->nullable();;
             $table->dateTime('birth_date')->nullable();
@@ -36,10 +36,7 @@ class CreateUsersTable extends Migration
             $table->integer('tts_id')->unsigned()->nullable();
             $table->integer('sci_id')->unsigned()->nullable();
             $table->rememberToken();
-            //$table->string('created_at');
-            //$table->string('updated_at');
-
-           $table->timestamps();
+            $table->timestamps();
         });
     }
 

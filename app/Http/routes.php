@@ -75,6 +75,8 @@ Route::group(['middleware'=>'teach'],function(){
 
     Route::get('teacher',['as'=>'teacher','uses'=>'UserController@teacher']);
 
+    Route::post('registergroup',['as'=>'group','uses'=>'UserController@groupRegister']);
+
 });
 
 
