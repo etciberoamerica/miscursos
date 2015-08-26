@@ -22,8 +22,11 @@
     </script>
 @endif
 <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+
     <div class="modal-dialog">
         <div class="loginmodal-container">
+            <div id="errores" class="alert alert-danger none">
+            </div>
             <h1>Crear Grupo </h1><br>
             {!! Form::open(['route' => 'group', 'class' => 'form','id'=>'form-group']) !!}
                 <div class="form-group">
@@ -35,19 +38,19 @@
                 <div class="form-group">
                     <span class="require">*</span>
                     {!! Form::label('grado','Grado en la institución') !!}:
-                    {!!  Form::select('Grado', $gra, 0 ,array('class' => 'form-control','id'=>'institucion_id')) !!}
+                    {!!  Form::select('Grado', $gra, 0 ,array('class' => 'form-control','id'=>'grado_id')) !!}
                     {!! $errors->first('Grado','<p class="error-message">:message</p>') !!}
                 </div>
                 <div class="form-group">
                     <span class="require">* </span>
                     {!! Form::label('grupo','Grupo en la institución') !!}:
-                    {!! Form::text('Grupo','',['class'=>'form-control','id'=>'grupo_institucion']) !!}
-                    {!! $errors->first('Grado','<p class="error-message">:message</p>') !!}
+                    {!! Form::text('Grupo','',['class'=>'form-control','id'=>'grupo_id']) !!}
+                    {!! $errors->first('Grupo','<p class="error-message">:message</p>') !!}
                 </div>
                 <div class="form-group">
                     <span class="require">*</span>
                     {!! Form::label('descripcion','Descripción:') !!}
-                    {!! Form::text('Descripción','',['class'=> 'form-control','id'=>'descripcion']) !!}
+                    {!! Form::text('Descripción','',['class'=> 'form-control','id'=>'descripción_id']) !!}
                     {!! $errors->first('Descripción','<p class="error-message">:message</p>') !!}
                 </div>
                 <div class="well text-center">
@@ -57,6 +60,9 @@
                         <th width="1%"> Accion </th>
                         </thead>
                         <tbody id="body_pop" class="body_pop">
+                        @if(Session::has('table'))
+                            {!! Session::get('table') !!}
+                        @endif
                         </tbody>
                     </table>
                 </div>
@@ -82,23 +88,43 @@
             });
         });
 
-        console.log($('#body_pop tr').length);
-
         $('#form-group').submit(function(){
-            if($('#body_pop tr').length < 1){
-                
+            var ar =$(this).serializeArray();
+            var dataSpace = removeSpaceArray(ar);
+            var mensajes = [];
+            if($('#body_pop tr').length == 0){
+                mensajes.push("Seleciona al menso un producto");
             }
-            console.log();
-            var producto = $.each($('#body_pop'),function($f,$g){
-
+            $.each(dataSpace,function($i,$value){
+                if($value.name != '_token'){
+                    if(mensajes.length == 0){
+                        $re = checkVacu($value.value , $value.name);
+                        if($re != ""){
+                            mensajes.push($re);
+                            $("#"+$value.name.toLowerCase()+"_id").focus();
+                        }
+                        $re2 = matchCadena($value.value , $value.name);
+                        if($re2 != "") {
+                            mensajes.push($re2);
+                            $("#" + $value.name.toLowerCase() + "_id").focus();
+                        }
+                    }
+                }
             });
-         return false
+            var html ="";
+                html += "<ul>";
+            for (var i = 0, errorLength = mensajes.length; i < errorLength; i++) {
+                 html +="<li>"+mensajes[i]+"</li>"
+            }
+            html += "</ul>";
+            $('#errores').html(html);
+            if(mensajes.length >=1){
+                $('#errores').removeClass('none');
+                return false;
+            }
+            $('#errores').addClass('none');
+            return true;
         });
-
-
-
-
-
 
         function concatProduct(data){
             var html="";
@@ -118,7 +144,6 @@
     function removeData(valor){
         $('#tr_data_'+valor).remove()
     }
-
 </script>
     <div id="conten"></div>
 @stop

@@ -92,4 +92,21 @@ class ProductoetcController extends Controller
         return Productoetc::findAll($request->input('producto_id'));
 
     }
+
+
+    public static function buildProductTr(array $data){
+
+        $html="";
+        foreach($data as $key => $id){
+            $dataP = Productoetc::findAll($id);
+            $html .="<tr id=tr_data_".$id.">";
+            $html .="<td align='left'>".$dataP['nombre_producto']."</td>";
+            $html .="<td><span onclick='removeData(".$dataP['id'].")' style='cursor: pointer' class='glyphicon glyphicon-trash eliminar'></span>";
+            $html .="<input type='hidden' value=".$dataP['id']."  name='Products[]'>";
+            $html .="</td></tr>";
+
+        }
+        return $html;
+
+    }
 }

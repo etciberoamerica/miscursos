@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 use misCursos\Http\Requests;
 use misCursos\Http\Controllers\Controller;
 
-use misCursos\Model\Groupetc;
+use misCursos\Model\Gradoetc;
 
-class GroupetcController extends Controller
+class GradoetcController extends Controller
 {
     /**
      * Display a listing of the resource.

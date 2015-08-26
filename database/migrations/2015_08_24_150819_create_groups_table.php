@@ -14,10 +14,9 @@ class CreateGroupsTable extends Migration
     {
         Schema::create('mc_groups',function(Blueprint $table){
             $table->increments('id');
-            $table->integer('name')->unsigned();
             $table->integer('group_id')->unsigned();
             $table->string('key');
-            $table->string('grup_institution');
+            $table->string('gruop_institution');
             $table->string('description');
             $table->boolean('actived')->default('1');
             $table->timestamps();

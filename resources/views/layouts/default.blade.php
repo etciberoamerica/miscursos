@@ -11,6 +11,7 @@
     {!! Html::script('static/assets/js/particles.js') !!}
     {!! Html::script('static/assets/js/bootstrap-datepicker.js') !!}
     {!! Html::script('static/assets/js/bootstrap-datepicker.es.min.js') !!}
+    {!! Html::script('static/assets/js/tools.js') !!}
     @yield('scripts')
 
 

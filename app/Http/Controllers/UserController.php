@@ -4,17 +4,22 @@ namespace misCursos\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+
 use misCursos\Model\User;
 use misCursos\Model\Productoetc;
-use misCursos\Model\Group;
+use misCursos\Model\Instgraetc;
 use misCursos\Model\Tool;
-use misCursos\Model\Groupetc;
+use misCursos\Model\Gradoetc;
+use misCursos\Model\Group;
 
+use misCursos\Http\Controllers\ProductoetcController;
 use Illuminate\Http\Request;
 
 use misCursos\Http\Requests;
 use misCursos\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
+
+use Session;
 
 class UserController extends Controller
 {
@@ -121,25 +126,16 @@ class UserController extends Controller
 
         $gra = [];
         $gra += [''=> 'Seleccione grado'];
-        $gra += Group::getListGroup()->toArray();
-
+        $gra += Instgraetc::getListGroup()->toArray();
 
         return view('teacher.teacher',compact('productos','gra'));
     }
 
     public function groupRegister(Request $request){
-        //dd($request->all());
-
         $g =[];
         $g +=$request->all();
         $g +=['key'=>Tool::generateKey(['LEN'=>10,'MI'=>false,'MA'=>true,'NU'=>true,'CA'=>false])];
         $data= Tool::removeSpace($g);
-
-        //dd(Groupetc::where('keygroup_grupo',$data['key'])->first());
-
-        //dd($data);
-        //dd(count($data['Products']));
-
         $validator= Validator::make($data,[
             'Producto'      => 'required|numeric',
             'Grado'         => 'required|numeric',
@@ -151,15 +147,37 @@ class UserController extends Controller
         ]);
 
         if($validator->fails()){
-            //dd($validator->messages());
-            //dd($validator->messages());
-                    $error=1;
-                 return Redirect::back()->withInput()->withErrors($validator->messages())->with('error',$error);
-
+            $error=1;
+            $table=ProductoetcController::buildProductTr($data['Products']);
+            Session::flash('table', $table);
+            return Redirect::back()->withInput()->withErrors($validator->messages())
+                ->with('error',$error);
         }
 
 
-        dd($data);
+        //dd($data);
+
+        $Group =Group::create([
+            'group_id'          => $data['Grado']
+            ,'key'               => $data['key']
+            ,'gruop_institution' => $data['Grupo']
+            ,'description'       => $data['Descripción']
+        ]);
+        dd($Group->id);
+
+
+
+     /*   array:7 [▼
+  "_token" => "i2calylJH3ZhLZUs7Y9vcLudlNIQHis4rOjuPfzM"
+  "Producto" => "7"
+  "Grado" => "14"
+  "Grupo" => "rrrrr"
+  "Descripción" => "rrrrr"
+  "Products" => array:2 [▶]
+  "key" => "RPU8FAQ9BX"*/
+
+
+
 
         foreach($data['Products'] as $key => $data){
             print_r($data);

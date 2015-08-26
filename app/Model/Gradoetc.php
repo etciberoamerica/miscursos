@@ -4,7 +4,7 @@ namespace misCursos\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Groupetc extends Model
+class Gradoetc extends Model
 {
     protected $connection = 'mysql_one';
 
