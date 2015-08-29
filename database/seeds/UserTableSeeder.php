@@ -30,16 +30,17 @@ class UserTableSeeder extends Seeder
 
         User::create([
             'name'   =>   'p2@etc.com',
-            'email'   =>   'p2@etc.com',
+            'email'   =>   'docente_demo@etciberoamerica.com',
             'password' =>  bcrypt('123456'),
             'institution_id' => 1,
             'country_id' =>1,
             'birth_date' => Carbon::now()->format('Ymd H:m:s'),
             'state_id' =>1,
             'rol_id' => 2,
-            'institution_id' => 472
-
-
+            'institution_id' => 472,
+            'ciidte_id' =>108980,
+            'moac_id' =>3200,
+            'sci_id' =>592
         ]);
 
         User::create([

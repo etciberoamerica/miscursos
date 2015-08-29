@@ -97,3 +97,6 @@ Route::group(['middleware'=>'adviser'],function(){
     Route::get('adviser',['as'=>'adviser','uses'=>'UserController@adviser']);
 
 });
+
+
+Route::get('prueba',['as'=>'prueba','uses'=>'UserController@prueba']);

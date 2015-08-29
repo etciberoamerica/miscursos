@@ -14,7 +14,7 @@
         "phpunit/phpunit": "~4.0",
         "phpspec/phpspec": "~2.1",
         "laravelcollective/html": "5.1.*",
-        " ": "2.*",
+        "barryvdh/laravel-debugbar": "2.0.*",
         "rap2hpoutre/laravel-log-viewer": "^0.4.0",
         "prettus/laravel-request-logger": "1.0.*",
         "artisaninweb/laravel-soap": "0.2.*"

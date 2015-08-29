@@ -18,6 +18,7 @@ class Kernel extends HttpKernel
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \misCursos\Http\Middleware\VerifyCsrfToken::class,
+        \misCursos\Http\Middleware\LogDatabaseQueries::class,
     ];
 
     /**
@@ -33,5 +34,6 @@ class Kernel extends HttpKernel
         'admin' => \misCursos\Http\Middleware\Admin::class,
         'teach' => \misCursos\Http\Middleware\Teach::class,
         'adviser' => \misCursos\Http\Middleware\Adviser::class,
+
     ];
 }

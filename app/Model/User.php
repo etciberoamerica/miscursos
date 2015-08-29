@@ -76,14 +76,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                     $data['Apellido_Materno'],
                     $data['tts_id'],
                     $data['Institución']));
-        }catch (ValidationException $e){
-            $e->getError();
+        }catch (\Exception $e){
+            $e->getMessage();
             abort('410','Update');
         }
 
+    }
 
-
-
+    public static function teeeeeo(){
 
     }
 }

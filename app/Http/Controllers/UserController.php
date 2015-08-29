@@ -9,6 +9,7 @@ use misCursos\Model\User;
 use misCursos\Model\Productoetc;
 use misCursos\Model\Instgraetc;
 use misCursos\Model\Tool;
+use misCursos\Model\Grouprelation;
 use misCursos\Model\Gradoetc;
 use misCursos\Model\Group;
 
@@ -20,6 +21,7 @@ use misCursos\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
 
 use Session;
+use DB;
 
 class UserController extends Controller
 {
@@ -132,6 +134,7 @@ class UserController extends Controller
     }
 
     public function groupRegister(Request $request){
+        DB::beginTransaction();
         $g =[];
         $g +=$request->all();
         $g +=['key'=>Tool::generateKey(['LEN'=>10,'MI'=>false,'MA'=>true,'NU'=>true,'CA'=>false])];
@@ -154,39 +157,73 @@ class UserController extends Controller
                 ->with('error',$error);
         }
 
-
-        //dd($data);
-
         $Group =Group::create([
             'group_id'          => $data['Grado']
             ,'key'               => $data['key']
             ,'gruop_institution' => $data['Grupo']
             ,'description'       => $data['Descripción']
         ]);
-        dd($Group->id);
-
-
-
-     /*   array:7 [▼
-  "_token" => "i2calylJH3ZhLZUs7Y9vcLudlNIQHis4rOjuPfzM"
-  "Producto" => "7"
-  "Grado" => "14"
-  "Grupo" => "rrrrr"
-  "Descripción" => "rrrrr"
-  "Products" => array:2 [▶]
-  "key" => "RPU8FAQ9BX"*/
-
-
-
-
+        $key_one=$data['key'];
+        $group_id = $data['Grado'];
+        $group = $data['Grupo'];
+        $description = $data['Descripción'];
+        $contador = count($data['Products']);
         foreach($data['Products'] as $key => $data){
-            print_r($data);
+            if($contador > 1){
+                $ciidte_key=Tool::generateKey(['LEN'=>10,'MI'=>false,'MA'=>true,'NU'=>true,'CA'=>false]);
+                $moac_key=Tool::generateKey(['LEN'=>10,'MI'=>false,'MA'=>true,'NU'=>true,'CA'=>false]);
+            }else{
+                $ciidte_key=$key_one;
+                $moac_key=$key_one;
+            }
+            try{
+                $res= DB::connection('sqlsrv_two')->select('EXEC AddGruposMOAC_CIIDTEv2 ?,?,?,?,?,?,?,?',
+                    [
+                        Auth::user()->email,
+                        $Group->gruop_institution,
+                        $Group->gruop_institution,
+                        $moac_key,
+                        Auth::user()->institution_id,
+                        $data,
+                        1,
+                        '']);
+                        foreach( $res  as $r){
+                         $moac_group_id = $r->idG;
+                        }
 
+                $Gradoetc= Gradoetc::create([
+                    'producto_id'                   =>$data,
+                    'usuario_id'                    =>Auth::user()->ciidte_id,
+                    'instgrado_id'                  =>$group_id,
+                    'nombre_moodle_grupo'           =>$group,
+                    'descripcion_moodle_grupo'      =>$description,
+                    'enrolmentkey_moodle_grupo'     =>'-',
+                    'activado_moodle_grupo'         =>'1',
+                    'fecha_activado_moodle_grupo'   => date('Y-m-d H:m:s'),
+                    'keygroup_grupo'                =>$ciidte_key,
+                    'instgrupo_grupo'               =>$group_id,
+                    'created'                       =>date('Y-m-d H:m:s'),
+                    'modified'                      =>date('Y-m-d H:m:s'),
+                    'estatus_grupo'                 =>1
+                                    ]);
+
+                Grouprelation::create([
+                    'group_id'          =>$Group->id
+                    ,'ciidte_group_id'  =>$Gradoetc->id
+                    ,'moac_group_id'    =>$moac_group_id
+                    ,'producto_id'      =>$data
+
+                ]);
+
+
+            }catch (\Exception $e){
+                //echo "algo cocurrio mal";
+                echo $e->getMessage();
+                DB::rollback();
+
+            }
         }
-        exit();
-
-
-
+        DB::commit();
 
     }
 
@@ -219,4 +256,19 @@ class UserController extends Controller
     /*
      * fin de funciones del asesor
      */
+
+    public function prueba(){
+        try{
+            User::teeeeeo($data);
+        }catch (\Exception $e){
+            echo $e->getMessage()."<br>";
+            //echo $e->getPrevious()."<br>";
+            echo $e->getCode()."<br>";
+            echo $e->getFile()."<br>";
+            echo $e->getLine()."<br>";
+            //echo $e->getTrace()."<br>";
+            //echo $e->getTraceAsString()."<br>";
+        }
+
+    }
 }

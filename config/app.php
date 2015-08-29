@@ -148,6 +148,7 @@ return [
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
         Prettus\RequestLogger\Providers\LoggerServiceProvider::class,
         Artisaninweb\SoapWrapper\ServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
 
 
 
@@ -201,6 +202,7 @@ return [
         'Form'      => Collective\Html\FormFacade::class,
         'Html'      => Collective\Html\HtmlFacade::class,
         'SoapWrapper' => Artisaninweb\SoapWrapper\Facades\SoapWrapper::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
 
     ],
 
