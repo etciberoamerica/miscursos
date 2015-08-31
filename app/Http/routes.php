@@ -25,6 +25,9 @@ Route::get('us',['as'=>'us', 'uses' => 'UseretcController@getData']);
 });*/
 Route::get('/', ['as' => '/','uses'=>'Auth\AuthController@getLogin']);
 
+Route::get('key',['as'=>'key','uses'=>'GroupController@getData']);
+
+
 // Authentication routes...
 //Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::get('auth/login', ['as' => '/','uses'=>'Auth\AuthController@getLogin']);
@@ -35,6 +38,7 @@ Route::get('auth/logout', ['as' => 'auth/logout', 'uses' => 'Auth\AuthController
 Route::get('auth/register', 'Auth\AuthController@getRegister');
 
 Route::post('auth/register', ['as' => 'auth/register', 'uses' => 'Auth\AuthController@postRegister']);
+
 
 
 

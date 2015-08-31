@@ -8,6 +8,41 @@
                <a href="#" >Crear Grupo</a>
            </button>
         </div>
+
+        <table class="table">
+            <thead>
+            <tr class="filters">
+                <th>#</th>
+                <th>Key Group</th>
+                <th>Nombre del grupo</th>
+                <th>Fecha</th>
+                <th>Productos</th>
+                <th>Alumnos</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php $i=1; ?>
+            @foreach($group as $g)
+                <tr>
+                    <td>{!! $i !!}</td>
+                    <td>{!! $g->key !!}</td>
+                    <td>{!! $g->gruop_institution !!}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+
+                            <span class='glyphicon glyphicon-eye-open' style="margin-right: 15px;"></span>
+
+                            <span class='glyphicon glyphicon-plus'></span>
+
+                    </td>
+                </tr>
+            <?php $i++;?>
+            @endforeach
+            </tbody>
+        </table>
     </div>
 </div>
 @if(count($errors)>0)

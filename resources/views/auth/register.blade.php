@@ -42,10 +42,48 @@
     </div>
 </div>
     -->
-
 <div class="container">
     <br><br><br>
+
+
+
+
     <div class="panel panel-default col-md-12 col-lg-12 ">
+        <br>
+        <div id="errores" class="alert alert-danger none">
+        </div>
+        <div class="panel-body">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                            <span class="glyphicon glyphicon-text-color">
+                                                        </span> Key group </a>
+                    </h4>
+                </div>
+
+                <div class="panel-body" style="  padding: 20px 431px;" >
+                        <div class="col-xs-8">
+                            {!! Form::text('Key','',['placeholder'=>'XXXXXXXXXX','size'=>'10','id'=>'key_id','class'=>'form-control']) !!}
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body" id="id_info">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                            <span class="glyphicon glyphicon-list-alt">
+                                                        </span> Información docente</a>
+                    </h4>
+                </div>
+
+
+            </div>
+
+        </div>
+
         <div class="panel-body">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -148,6 +186,61 @@
 </div>
 <script>
     $(document).ready(function(){
+
+        $('#key_id').blur(function(){
+
+            var mensajes =[];
+
+            if($(this).val() == ''){
+                $t="Ingresa el key ";
+                $('#key_id').focus();
+
+                mensajes.push($t);
+
+            }
+            if($(this).val().length != 10){
+                $t="El key group debe de ser de 10 caracteres";
+                $('#key_id').focus();
+                mensajes.push($t);
+
+            }
+
+
+            var html ="";
+            html += "<ul>";
+            for (var i = 0, errorLength = mensajes.length; i < errorLength; i++) {
+                html +="<li>"+mensajes[i]+"</li>"
+            }
+            html += "</ul>";
+            $('#errores').html(html);
+            if(mensajes.length >=1){
+                $('#errores').removeClass('none');
+                return false;
+            }
+            $('#errores').addClass('none');
+
+
+            if(mensajes.length == 0){
+
+                $.ajax({
+                    url:'key',
+                    method: 'GET',
+                    data:{
+                        'key' :$(this).val()
+                    },
+                    success: function(data){
+                        $('#id_info').empty();
+
+                    },
+                    error: function(){
+                        alert('Uppsss ocurrio un error intenta mas tarde');
+                    }
+                });
+
+            }
+
+
+        });
 
         $('#datapicker').datepicker({
             format: "dd-mm-yyyy",

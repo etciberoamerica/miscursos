@@ -121,16 +121,14 @@ class UserController extends Controller
      * Inicio de funciones de docente
      */
     public function teacher(){
-        //dd(Auth::user());
         $productos = [];
         $productos += [''=>'Seleccione producto'];
         $productos += Productoetc::getListPro()->toArray();
-
         $gra = [];
         $gra += [''=> 'Seleccione grado'];
         $gra += Instgraetc::getListGroup()->toArray();
-
-        return view('teacher.teacher',compact('productos','gra'));
+        $group = Group::where('actived',1)->paginate(10);
+        return view('teacher.teacher',compact('productos','gra','group'));
     }
 
     public function groupRegister(Request $request){
@@ -168,6 +166,7 @@ class UserController extends Controller
         $group = $data['Grupo'];
         $description = $data['Descripción'];
         $contador = count($data['Products']);
+
         foreach($data['Products'] as $key => $data){
             if($contador > 1){
                 $ciidte_key=Tool::generateKey(['LEN'=>10,'MI'=>false,'MA'=>true,'NU'=>true,'CA'=>false]);
@@ -223,7 +222,9 @@ class UserController extends Controller
 
             }
         }
+
         DB::commit();
+        return $this->teacher();
 
     }
 

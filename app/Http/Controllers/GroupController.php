@@ -6,9 +6,10 @@ use Illuminate\Http\Request;
 
 use misCursos\Http\Requests;
 use misCursos\Http\Controllers\Controller;
+use misCursos\Model\Group;
 use misCursos\Model\Instgraetc;
 
-class InstgraetcController extends Controller
+class GroupController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -84,5 +85,13 @@ class InstgraetcController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    public function getData(){
+        $f =Group::where('id',1)->get();
+        echo"<pre>";
+        print_r($f);
+        echo"</pre>";
     }
 }
