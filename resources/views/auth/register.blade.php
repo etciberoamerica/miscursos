@@ -69,22 +69,28 @@
                 </div>
             </div>
         </div>
-        <div class="panel-body" id="id_info">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                            <span class="glyphicon glyphicon-list-alt">
-                                                        </span> Información docente</a>
-                    </h4>
-                </div>
+        <div class="none" id="id_info" >
+            <div class="panel-body">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                <span class="glyphicon glyphicon-list-alt">
+                                                            </span> Información docente</a>
+                        </h4>
+                    </div>
 
+                    <div id="info-docente">
+
+
+                    </div>
+
+
+                </div>
 
             </div>
 
-        </div>
-
-        <div class="panel-body">
+            <div class="panel-body">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
@@ -179,6 +185,7 @@
 
 
         </div>
+        </div>
     </div>
 
 
@@ -194,15 +201,12 @@
             if($(this).val() == ''){
                 $t="Ingresa el key ";
                 $('#key_id').focus();
-
                 mensajes.push($t);
-
             }
             if($(this).val().length != 10){
                 $t="El key group debe de ser de 10 caracteres";
                 $('#key_id').focus();
                 mensajes.push($t);
-
             }
 
 
@@ -217,6 +221,7 @@
                 $('#errores').removeClass('none');
                 return false;
             }
+
             $('#errores').addClass('none');
 
 
@@ -229,7 +234,38 @@
                         'key' :$(this).val()
                     },
                     success: function(data){
-                        $('#id_info').empty();
+                        if(data == 0){
+                            $('#id_info').addClass('none');
+                            var html = "<ul>" +
+                                    "<li>El Key Group no existe</li>" +
+                                    "</ul>";
+                            $('#errores').removeClass('none');
+
+                            console.log(html);
+
+
+                            $('#errores').html(html);
+                        }else{
+                            $('#errores').addClass('none');
+                            $('#id_info').removeClass('none');
+                            $.each(data,function(key,elemento,d){
+                                html="";
+                                html +="<table align='center'>" +
+                                        "<tr>" +
+                                        "<td>";
+
+                                html +='<h3>'+elemento['name']+' '+elemento['last_name']+' '+elemento['last_name_m']+'</h3>';
+                                    html +="</td>" +
+                                            "</tr>" +
+                                            "<table>";
+                                $('#info-docente').html(html);
+
+                                console.log('el key '+key);
+                                console.log('el elemento '+elemento['id']);
+                                console.log('el d '+d);
+
+                            });
+                        }
 
                     },
                     error: function(){
@@ -237,6 +273,8 @@
                     }
                 });
 
+            }else{
+                $('#id_info').addClass('none');
             }
 
 

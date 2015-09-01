@@ -15,6 +15,8 @@ Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
 Route::get('insert',['as'=>'insert', 'uses' => 'UseretcController@getProcedure']);
 Route::get('us',['as'=>'us', 'uses' => 'UseretcController@getData']);
+Route::get('prueba',['as'=>'prueba', 'uses' => 'UseretcController@prueba']);
+
 
 
 
@@ -25,7 +27,6 @@ Route::get('us',['as'=>'us', 'uses' => 'UseretcController@getData']);
 });*/
 Route::get('/', ['as' => '/','uses'=>'Auth\AuthController@getLogin']);
 
-Route::get('key',['as'=>'key','uses'=>'GroupController@getData']);
 
 
 // Authentication routes...
@@ -35,9 +36,12 @@ Route::post('auth/login', ['as' =>'auth/login', 'uses' => 'Auth\AuthController@p
 Route::get('auth/logout', ['as' => 'auth/logout', 'uses' => 'Auth\AuthController@getLogout']);
 
 // Registration routes...
-Route::get('auth/register', 'Auth\AuthController@getRegister');
+Route::get('register', ['as' => 'auth/register', 'uses' => 'Auth\AuthController@getRegister']);
 
-Route::post('auth/register', ['as' => 'auth/register', 'uses' => 'Auth\AuthController@postRegister']);
+Route::post('register', ['as' => 'auth/register', 'uses' => 'Auth\AuthController@postRegister']);
+Route::get('key',['as' =>'auth/key','uses' =>'UserController@getDate']);
+
+
 
 
 
@@ -79,7 +83,11 @@ Route::group(['middleware'=>'teach'],function(){
 
     Route::get('teacher',['as'=>'teacher','uses'=>'UserController@teacher']);
 
-    Route::post('registergroup',['as'=>'group','uses'=>'UserController@groupRegister']);
+    Route::post('teacher',['as'=>'teacher','uses'=>'UserController@groupRegister']);
+
+
+
+
 
 });
 

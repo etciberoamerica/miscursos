@@ -14,11 +14,13 @@ use misCursos\Model\Gradoetc;
 use misCursos\Model\Group;
 
 use misCursos\Http\Controllers\ProductoetcController;
-use Illuminate\Http\Request;
+use Illuminate\Http\Request as Request;
 
 use misCursos\Http\Requests;
 use misCursos\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
+
+
 
 use Session;
 use DB;
@@ -120,6 +122,17 @@ class UserController extends Controller
     /*
      * Inicio de funciones de docente
      */
+    public function redirecTeach(){
+        $productos = [];
+        $productos += [''=>'Seleccione producto'];
+        $productos += Productoetc::getListPro()->toArray();
+        $gra = [];
+        $gra += [''=> 'Seleccione grado'];
+        $gra += Instgraetc::getListGroup()->toArray();
+        $group = Group::where('actived',1)->orderBy('id','DESC')->paginate(10);
+        return view('teacher.teacher',compact('productos','gra','group'));
+    }
+
     public function teacher(){
         $productos = [];
         $productos += [''=>'Seleccione producto'];
@@ -127,7 +140,7 @@ class UserController extends Controller
         $gra = [];
         $gra += [''=> 'Seleccione grado'];
         $gra += Instgraetc::getListGroup()->toArray();
-        $group = Group::where('actived',1)->paginate(10);
+        $group = Group::where('actived',1)->orderBy('id','DESC')->paginate(10);
         return view('teacher.teacher',compact('productos','gra','group'));
     }
 
@@ -160,6 +173,7 @@ class UserController extends Controller
             ,'key'               => $data['key']
             ,'gruop_institution' => $data['Grupo']
             ,'description'       => $data['Descripción']
+            ,'user_id'           => Auth::user()->id
         ]);
         $key_one=$data['key'];
         $group_id = $data['Grado'];
@@ -224,8 +238,44 @@ class UserController extends Controller
         }
 
         DB::commit();
-        return $this->teacher();
+        return $this->redirecTeach();
 
+    }
+
+
+
+
+    public function getDate(Request $request){
+        if ($request->ajax()) {
+
+            $g =[];
+            $g +=$request->all();
+            $data= Tool::removeSpace($g);
+            //dd($data['key']);
+
+
+
+           $dataGroup= Group::where('key',$data['key'])->
+                        join('mc_users','mc_users.id', '=', 'mc_groups.user_id')
+                        ->select('mc_users.*', 'mc_groups.*')
+                        ->get()->toArray();
+            if(count($dataGroup) == 0){
+                return 0;
+
+            }
+
+            /*
+             * DB::table('users')
+        ->join('contacts', function ($join) {
+            $join->on('users.id', '=', 'contacts.user_id')
+                 ->where('contacts.user_id', '>', 5);
+        })
+        ->get();
+             */
+            return $dataGroup;
+
+
+        }
     }
 
     /*
@@ -259,17 +309,15 @@ class UserController extends Controller
      */
 
     public function prueba(){
-        try{
-            User::teeeeeo($data);
-        }catch (\Exception $e){
-            echo $e->getMessage()."<br>";
-            //echo $e->getPrevious()."<br>";
-            echo $e->getCode()."<br>";
-            echo $e->getFile()."<br>";
-            echo $e->getLine()."<br>";
-            //echo $e->getTrace()."<br>";
-            //echo $e->getTraceAsString()."<br>";
-        }
+        $key='20SSDHOQSF';
+        $dataGroup= Group::where('key',$key)->
+        join('mc_users','mc_users.id', '=', 'mc_groups.user_id')
+            ->select('mc_users.*', 'mc_groups.*')
+            ->get();
+
+        return true;
+
+        //dd($dataGroup);
 
     }
 }

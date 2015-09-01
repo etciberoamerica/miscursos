@@ -28,7 +28,7 @@
                         <td>{!! $i !!}</td>
                         <td>{!! $g->key !!}</td>
                         <td>{!! $g->gruop_institution !!}</td>
-                        <td></td>
+                        <td>{!! $g->created_at->format('Y/m/d H:ia') !!}</td>
                         <td></td>
                         <td></td>
                         <td>
@@ -63,7 +63,7 @@
                 <div id="errores" class="alert alert-danger none">
                 </div>
                 <h1>Crear Grupo </h1><br>
-                {!! Form::open(['route' => 'group', 'class' => 'form','id'=>'form-group']) !!}
+                {!! Form::open(['route' => 'teacher', 'class' => 'form','id'=>'form-group','autocomplete'=>'off']) !!}
                 <div class="form-group">
                     <span class="require">*</span>
                     {!! Form::label('producto','Seleccione un producto') !!}:

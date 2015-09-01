@@ -13,7 +13,9 @@ class Group extends Model
         ,'key'
         ,'gruop_institution'
         ,'description'
+        ,'user_id'
         ,'created_at'
+
     ];
 
     protected $table = 'mc_groups';
@@ -21,7 +23,7 @@ class Group extends Model
 
     public function grouprelation()
     {
-        return $this->belongsTo('misCursos\Model\Grouprelation','mc_groups_relation');
+        return $this->belongsTo('Model\Grouprelation','mc_groups_relation');
         //return $this->hasMany('App\Task');
     }
 }

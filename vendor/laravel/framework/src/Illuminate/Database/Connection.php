@@ -96,7 +96,7 @@ class Connection implements ConnectionInterface
      *
      * @var bool
      */
-    protected $loggingQueries = true;
+    protected $loggingQueries = false;
 
     /**
      * Indicates if the connection is in a "dry run".
@@ -775,6 +775,16 @@ class Connection implements ConnectionInterface
     protected function getElapsedTime($start)
     {
         return round((microtime(true) - $start) * 1000, 2);
+    }
+
+    /**
+     * Is Doctrine available?
+     *
+     * @return bool
+     */
+    public function isDoctrineAvailable()
+    {
+        return class_exists('Doctrine\DBAL\Connection');
     }
 
     /**

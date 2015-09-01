@@ -18,6 +18,7 @@ class CreateGroupsTable extends Migration
             $table->string('key');
             $table->string('gruop_institution');
             $table->string('description');
+            $table->integer('user_id');
             $table->boolean('actived')->default('1');
             $table->timestamps();
         });
