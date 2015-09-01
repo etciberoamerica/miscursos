@@ -219,6 +219,7 @@
             $('#errores').html(html);
             if(mensajes.length >=1){
                 $('#errores').removeClass('none');
+                $('#id_info').addClass('none');
                 return false;
             }
 
@@ -241,9 +242,6 @@
                                     "</ul>";
                             $('#errores').removeClass('none');
 
-                            console.log(html);
-
-
                             $('#errores').html(html);
                         }else{
                             $('#errores').addClass('none');
@@ -260,10 +258,6 @@
                                             "<table>";
                                 $('#info-docente').html(html);
 
-                                console.log('el key '+key);
-                                console.log('el elemento '+elemento['id']);
-                                console.log('el d '+d);
-
                             });
                         }
 
@@ -274,6 +268,7 @@
                 });
 
             }else{
+
                 $('#id_info').addClass('none');
             }
 
