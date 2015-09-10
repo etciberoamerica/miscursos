@@ -49,7 +49,7 @@ Route::get('key',['as' =>'auth/key','uses' =>'UserController@getDate']);
 
 Route::get('institucion',['as'=>'institucion','uses'=>'InstitutionController@getInstitutions']);
 
-Route::get('auth/state',['as'=>'auth/state','uses'=>'StateController@getState']);
+Route::get('state',['as'=>'auth/state','uses'=>'StateController@getState']);
 
 
 Route::group(['middleware'=>'auth'],function(){
