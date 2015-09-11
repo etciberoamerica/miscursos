@@ -106,6 +106,16 @@ return [
             'prefix'   => '',
         ],
 
+        'sqlsrv_four' => [
+            'driver'   => 'sqlsrv',
+            'host'     => env('DB_HOST_SRV_FOUR'),
+            'database' => env('DB_DATABASE_SRV_FOUR'),
+            'username' => env('DB_USERNAME_SRV_FOUR'),
+            'password' => env('DB_PASSWORD_SRV_FOUR'),
+            'charset'  => 'utf8',
+            'prefix'   => '',
+        ],
+
 
     ],
 

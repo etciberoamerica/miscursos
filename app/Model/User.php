@@ -66,7 +66,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $telefono =12345678;
         try{
             $res= DB::connection('')->select('EXEC creausuarioTemp ?,?,?,?,?,?,?,?,?,?',
-                array($data['Email'],
+                array(
+                    $data['Email'],
                     bcrypt($data['Password']),
                     $data['Email'],
                     $data['ciidte_id'],

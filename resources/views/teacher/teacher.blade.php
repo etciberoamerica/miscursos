@@ -106,6 +106,7 @@
             </div>
         </div>
     </div>
+
     <script>
         $(document).ready(function(){
             $('#producto_id').unbind().bind('change',function(){
