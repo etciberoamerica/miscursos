@@ -24,15 +24,14 @@ class OrdermoacController extends Controller
      */
     public function index()
     {
-        $fechActualy= date('Y-m-d', strtotime("+1 day"));
         $fecham =Carbon::now()->format('-m-d');
         $fechaAc = Carbon::now();
         $YearAc=$fechaAc->format('Y');
         $YearMn= $YearAc - 1;
-        $fechaAc=$fechaAc->format('Y-m-');
+        $fechaAc=$fechaAc->format('Y-m-d');
         $fechaMn=$YearMn.''.$fecham;
         $data = Ordermoac::
-        whereBetween('ORDER_MOAC.dateadd', [$fechaMn, $fechActualy])
+            whereBetween('ORDER_MOAC.dateadd', [$fechaMn, $fechaAc])
             ->orderBy('ORDER_MOAC.id', 'desc')
             ->join('LICENSES_MOAC','ORDER_MOAC.id_license','=','LICENSES_MOAC.id')
             ->join('LANGUAGE_MOAC','ORDER_MOAC.id_language','=','LANGUAGE_MOAC.id')
