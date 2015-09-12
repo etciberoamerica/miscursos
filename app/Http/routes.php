@@ -15,6 +15,8 @@ Route::get('orders',['as'=>'orders','uses'=>'OrdermoacController@index']);
 
 Route::get('find/order',['as'=>'find/order','uses'=>'OrdermoacController@find']);
 
+Route::get('order/upload',['as'=>'order/upload','uses'=>'OrdermoacController@upload' ]);
+
 Route::get('find/code',['as'=>'find/code','uses'=>'KeysmoacController@find']);
 
 Route::get('action/insert',['as'=>'action/insert','uses'=>'CtrlcodescciController@insert']);

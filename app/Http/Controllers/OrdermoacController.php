@@ -24,14 +24,15 @@ class OrdermoacController extends Controller
      */
     public function index()
     {
+        $fechActualy= date('Y-m-d', strtotime("+1 day"));
         $fecham =Carbon::now()->format('-m-d');
         $fechaAc = Carbon::now();
         $YearAc=$fechaAc->format('Y');
         $YearMn= $YearAc - 1;
-        $fechaAc=$fechaAc->format('Y-m-d');
+        $fechaAc=$fechaAc->format('Y-m-');
         $fechaMn=$YearMn.''.$fecham;
         $data = Ordermoac::
-            whereBetween('ORDER_MOAC.dateadd', [$fechaMn, $fechaAc])
+        whereBetween('ORDER_MOAC.dateadd', [$fechaMn, $fechActualy])
             ->orderBy('ORDER_MOAC.id', 'desc')
             ->join('LICENSES_MOAC','ORDER_MOAC.id_license','=','LICENSES_MOAC.id')
             ->join('LANGUAGE_MOAC','ORDER_MOAC.id_language','=','LANGUAGE_MOAC.id')
@@ -151,6 +152,23 @@ class OrdermoacController extends Controller
                 $i++;
         }
         return $data;
+
+    }
+
+
+    public function upload(Request $request){
+
+        $dta = Keysmoac::where('id_order',$request->order_id)->get();
+
+        foreach($dta as $r){
+
+            $reData= Ctrlcodescci::where('sCode',$r->key_activation)->first();
+
+            if(is_null($reData)){
+                Keysmoac::CodeJasper($r->id);
+            }
+        }
+        Return "bien";
 
     }
 }

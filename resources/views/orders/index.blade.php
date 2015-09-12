@@ -28,6 +28,7 @@
                 <td>Cantidad</td>
                 <td>activo</td>
                 <td>Jasper</td>
+                <td>Cargar</td>
             </tr>
         </thead>
 
@@ -41,16 +42,29 @@
                     <td>{!! $pag->date_limit !!}</td>
                     <td>{!! $pag->quantity !!}</td>
                     <td>{!! $pag->active !!}</td>
-                    <td>{!! $pag->date_limit !!}</td>
-                    @if($pag->exis_jsp == false)
+                    @if($pag->exis_jsp != $pag->quantity)
                     <td >
-                        <span data-toggle="modal" data-target="#login-modal" onclick="clickd({!! $pag->id !!})" style="color: red;margin: 10px;" class="glyphicon glyphicon-remove"></span>
+                        @if($pag->quantity >= 20)
+                            <span data-toggle="modal" data-target="#login-modal" onclick="masive()" style="cursor:pointer;color: red;margin: 10px;" class="glyphicon glyphicon-remove"></span>
+                        @else
+                            <span data-toggle="modal" data-target="#login-modal" onclick="clickd({!! $pag->id !!})" style="cursor:pointer;color: red;margin: 10px;" class="glyphicon glyphicon-remove"></span>
+                        @endif
+                    </td>
+                    <td>
+                        <span class="glyphicon glyphicon-upload" onclick="uploadorder({!! $pag->id !!})" style="cursor:pointer;color: green;margin: 10px;"></span>
                     </td>
                     @else
-                        <td >
-                            <span data-toggle="modal" data-target="#login-modal" onclick="clickd({!! $pag->id !!})" style="color: green;margin: 10px;" class="glyphicon glyphicon-ok"></span>
+
+                        <td>
+                            <span  style="cursor:pointer;color: green;margin: 10px;" class="glyphicon glyphicon-ok"></span>
+                        </td>
+                        <td>
+                            <span  style="cursor:pointer;color: green;margin: 10px;" class="glyphicon glyphicon-ok"></span>
                         </td>
                     @endif
+
+
+
                 </tr>
 
             @endforeach
@@ -69,28 +83,34 @@
         <div class="modal-dialog">
             <div class="loginmodal-container">
                 <div id="errores" class="alert alert-danger none">
+                    La Carga debe de ser masiva.
                 </div>
-                <h1>Codigos no existentes</h1><br>
-                <div class="well text-center">
-                    {!! Form::open(['route' => 'action/insert', 'class' => 'form','id'=>'form-group','autocomplete'=>'off']) !!}
+                <div id="remove">
+                    <h1>Codigos no existentes</h1><br>
+                    <div class="well text-center">
+                        {!! Form::open(['route' => 'action/insert', 'class' => 'form','id'=>'form-group','autocomplete'=>'off']) !!}
 
 
-                    <table align="center" id="mytable" >
-                        <thead>
-                        <th > Identificador</th>
-                        <th > Código </th>
-                        <th > Jasper </th>
-                        <th>Selecciona <input type="checkbox" id="checkall" /></th>
-                        </thead>
-                        <tbody id="body_pop" class="body_pop">
+                        <table align="center" id="mytable" >
+                            <thead>
+                            <th > Identificador</th>
+                            <th > Código </th>
+                            <th > Jasper </th>
+                            <th>Selecciona <input type="checkbox" id="checkall" /></th>
+                            </thead>
+                            <tbody id="body_pop" class="body_pop">
 
-                        </tbody>
-                    </table>
-                    <input type="submit" value="Ingresar" class="btn btn-lg btn-default btn-block">
+                            </tbody>
+                        </table>
+                        <input type="submit" value="Ingresar" class="btn btn-lg btn-default btn-block">
 
-                    {!! Form::close() !!}
+                        {!! Form::close() !!}
+
+                    </div>
 
                 </div>
+
+
             </div>
         </div>
     </div>
@@ -99,7 +119,6 @@
 
     <script>
         $(document).ready(function(){
-
             $('#form-group').submit(function(event){
                 $.ajax({
                     url:'action/insert',
@@ -108,9 +127,7 @@
                     },
                     type:'GET',
                     success:function(data){
-                        location.reload()
-
-                        //$('#tbody').html(data);
+                        location.reload();
                     },
                     error:function(){
                         alert('opsssss lo sentimos ocurrio un error  intenta mas tarde');
@@ -144,7 +161,6 @@
                         },
                         type:'GET',
                         success:function(data){
-
                             $('#tbody').html(data);
                         },
                         error:function(){
@@ -152,13 +168,31 @@
                         }
                     });
                 }
-
-
-
             });
-
         });
+
+        function uploadorder(id){
+            $.ajax({
+                url:'order/upload',
+                data:{
+                    order_id  :id
+                },
+                type: 'GET',
+                success:function(data){
+                    location.reload();
+                },error:function(){
+                    alert('Ocurrio un error intenta mas tarde');
+                }
+            });
+        }
+
+        function masive(){
+            $('#errores').removeClass('none');
+            $('#remove').empty()
+        }
+
         function clickd(id){
+            $('#errores').addClass('none');
             $('#body_pop').empty();
             $.ajax({
                 url:'find/order',
@@ -169,7 +203,6 @@
                 success:function(data){
                     var html=''
                     $.each(data,function(index,elemento){
-
                         html +='<tr>';
                         html +='<td>';
                         html +=elemento.id;
@@ -177,9 +210,7 @@
                         html +='<td>';
                         html +=elemento.key_activation;
                         html +='</td>';
-
                         html +='<td>'
-
                         if(!elemento.exist){
                             html += "<span class='glyphicon glyphicon-remove' style='color: red;margin: 10px;'></span>";
                         }else{
@@ -190,11 +221,8 @@
                         html+=" <input type='checkbox' class='checkthis' name='code[]' id='code[]' value="+elemento.id+" >" +
                                 "</td>";
                         html +='</tr>';
-
-
                     });
                     $('#body_pop').html(html);
-
                 },error:function(){
                     alert('Ocurrio un error intenta mas tarde');
                 }
