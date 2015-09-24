@@ -90,7 +90,7 @@ class KeysmoacController extends Controller
     }
 
     public function find(Request $request){
-        $datak=Keysmoac::where('key_activation',$request->code)->first();
+        $datak=Keysmoac::where('key_activation','like','%'.$request->code.'%')->first();
         $data = Ordermoac::orderBy('ORDER_MOAC.id', 'desc')
             ->join('LICENSES_MOAC','ORDER_MOAC.id_license','=','LICENSES_MOAC.id')
             ->join('LANGUAGE_MOAC','ORDER_MOAC.id_language','=','LANGUAGE_MOAC.id')

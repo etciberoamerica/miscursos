@@ -11,6 +11,9 @@
 |
 */
 
+
+Route::get('reports/general',['as'=>'reports/general','uses'=>'VersionappcciController@report']);
+
 Route::get('orders',['as'=>'orders','uses'=>'OrdermoacController@index']);
 
 Route::get('find/order',['as'=>'find/order','uses'=>'OrdermoacController@find']);
