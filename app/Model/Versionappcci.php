@@ -15,13 +15,9 @@ class Versionappcci extends Model
 
 
     public static function productos(){
-
         return $data = Versionappcci::join('Cat_Apps ','Cat_VersionsApps.idApp','=','Cat_Apps.idApp')
         ->select('Cat_Apps.sApp','Cat_VersionsApps.sVersion','Cat_VersionsApps.idVersion')->get();
-
-
-
-
     }
+
 
 }

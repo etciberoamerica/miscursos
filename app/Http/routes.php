@@ -14,6 +14,10 @@
 
 Route::get('reports/general',['as'=>'reports/general','uses'=>'VersionappcciController@report']);
 
+Route::get('reports/general/get',['as'=>'general/get','uses'=>'VersionappcciController@excelGeneral']);
+
+Route::get('reports/general/pagination',['as'=>'general/pagination','uses'=>'VersionappcciController@reportSelect']);
+
 Route::get('orders',['as'=>'orders','uses'=>'OrdermoacController@index']);
 
 Route::get('find/order',['as'=>'find/order','uses'=>'OrdermoacController@find']);

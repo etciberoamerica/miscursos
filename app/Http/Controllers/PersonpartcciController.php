@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use misCursos\Http\Requests;
 use misCursos\Http\Controllers\Controller;
 
+use misCursos\Model\Personpartcci;
+use misCursos\Model\Personscci;
+use misCursos\Model\Partnetinfocci;
+
 class PersonpartcciController extends Controller
 {
     /**
@@ -84,4 +88,6 @@ class PersonpartcciController extends Controller
     {
         //
     }
+
+
 }
