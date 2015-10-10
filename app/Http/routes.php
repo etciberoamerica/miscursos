@@ -12,11 +12,18 @@
 */
 
 
-Route::get('reports/general',['as'=>'reports/general','uses'=>'VersionappcciController@report']);
+Route::get('pr',['as'=>'pr','uses'=>'LicensmoacController@g']);
 
-Route::get('reports/general/get',['as'=>'general/get','uses'=>'VersionappcciController@excelGeneral']);
+Route::get('reports/general',['as'=>'reports/general','uses'=>'VersionappcciController@report']);
+//Route::get('reports/general',['as'=>'reports/general','uses'=>'VersionappcciController@report']);
+
+Route::get('reports/general/get',['as'=>'reports/general/get','uses'=>'VersionappcciController@excelGeneral']);
 
 Route::get('reports/general/pagination',['as'=>'general/pagination','uses'=>'VersionappcciController@reportSelect']);
+
+
+Route::get('reports/general/pagination/prueba',['as'=>'general/pagination/prueba','uses'=>'VersionappcciController@reportSelectPru']);
+
 
 Route::get('orders',['as'=>'orders','uses'=>'OrdermoacController@index']);
 

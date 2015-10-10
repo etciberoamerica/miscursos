@@ -97,26 +97,29 @@ class VersionappcciController extends Controller
 
     public function report(){
         $data = Versionappcci::productos()->toJson();
-        $data2 = Personpartcci::getPartnet()->toJson();
+        $partner = Personpartcci::getPartnet();
         $pagination = Personpartcci::reportGeneral();
-        return view('reports.report',compact('data','data2','pagination'));
+        return view('reports.report',compact('data','partner','pagination'));
     }
 
     public function excelGeneral(Request $request){
-            Excel::create('Laravel Excel', function($excel) {
-                $excel->sheet('Relation', function($sheet) {
-                    $data = Personscci::
-                    join('Ctrl_Activations as b','Cat_Persons.idPerson','=','b.idPerson')
-                        ->join('Ctrl_ProfessorStudents as c','c.idStudent','=','Cat_Persons.idPerson')
-                        ->join('ACtrl_PersonsPartner as d','d.idPerson','=','c.idProfessor')
-                        ->join('ACat_PartnerAInfo as e','e.idPArtner','=','d.idPartner')
-                        ->join('Cat_Persons as a2','c.idProfessor','=','a2.idPerson')
-                        ->select('Cat_Persons.sName As Nombre Alumno','Cat_Persons.sLastName As Apellido Alumno',
-                            'Cat_Persons.sEmail as Correo Alumno',
-                            'Cat_Persons.dUTCRegistrationDate as Fecha registro',
-                            //'CONVERT(varchar(50), Cat_Persons.dUTCRegistrationDate, 103) as fechaRegistro',
-                            'b.sCode as código','e.sTradeName as Institución','a2.sEmail as Correo Profesor')
-                        ->orderBy('Cat_Persons.sLastName', 'desc')->get();
+        $dat = $request->all();
+
+        $data = Personscci::name(($dat['institu'])?$dat['institu']:'')->
+        join('Ctrl_Activations as b','Cat_Persons.idPerson','=','b.idPerson')
+            ->join('Ctrl_ProfessorStudents as c','c.idStudent','=','Cat_Persons.idPerson')
+            ->join('ACtrl_PersonsPartner as d','d.idPerson','=','c.idProfessor')
+            ->join('ACat_PartnerAInfo as e','e.idPArtner','=','d.idPartner')
+            ->join('Cat_Persons as a2','c.idProfessor','=','a2.idPerson')
+            ->select('Cat_Persons.sName As Nombre Alumno','Cat_Persons.sLastName As Apellido Alumno',
+                'Cat_Persons.sEmail as Correo Alumno',
+                'Cat_Persons.dUTCRegistrationDate as Fecha registro',
+                //'CONVERT(varchar(50), Cat_Persons.dUTCRegistrationDate, 103) as fechaRegistro',
+                'b.sCode as código','e.sTradeName as Institución','a2.sEmail as Correo Profesor')
+            ->orderBy('Cat_Persons.sLastName', 'desc')->get();
+
+            Excel::create('Laravel Excel', function($excel) use($data) {
+                $excel->sheet('Relation', function($sheet) use($data) {
                     $sheet->fromArray($data);
                 });
             })->export('xlsx');
@@ -125,6 +128,14 @@ class VersionappcciController extends Controller
 
     public function reportSelect(Request $request){
         $pagination = Personpartcci::reportGeneral($request->all());
+        return view('reports.reportlist',compact('pagination'));
+    }
+
+    public function reportSelectPru(Request $request){
+
+        $pagination = Personpartcci::reportGeneral(["producto" => "4","institu" => "105"]);
+
+        return view('reports.prueba',compact('pagination'));
     }
 
 }

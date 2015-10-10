@@ -11,7 +11,7 @@ class Personscci extends Model
 
 
     public function scopeName($query, $valor){
-        if(!is_null($valor)){
+        if(!is_null($valor) && $valor !=0){
             $query->where('e.idPArtner','=',$valor);
         }
     }
